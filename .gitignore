@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Node (tools/export pipeline)
+node_modules/
+
+# Build artifacts / renders
+tools/out/
+*.pdf.tmp
