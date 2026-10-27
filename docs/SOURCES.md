@@ -29,7 +29,14 @@ Estado: ✅ extraída · 🟡 parcial · ❌ no accesible
   → [data/11-mdflow-metrics.md](data/11-mdflow-metrics.md) *(métricas y benchmarks SWE: SWE-bench, FrontierCode 13.4%, SWE-Marathon 26%, Faros 2026)*
 - ✅ C# Corner — <https://www.c-sharpcorner.com/article/ai-software-factories-the-future-of-software-development>
   → [data/12-csharpcorner-table.md](data/12-csharpcorner-table.md) *(tabla «Traditional vs AI Coding Assistants vs AI Software Factories» en markdown)*
+- ✅ Recursive AI — <https://recursiveai.org/research/alera-library-factory/>
+  → [data/14-recursiveai-alera.md](data/14-recursiveai-alera.md) *(caso real Alera: atención humana 34h→3h, v1.0 rota a los 46', control externo fijo)*
 
+## Dark factory
+- ✅ Differ, «What is a dark software factory?» — <https://blog.getdiffer.com/what-is-a-dark-software-factory>
+  → [data/16-differ-dark-factory.md](data/16-differ-dark-factory.md) *(origen del término lights-out/FANUC, 3 capacidades, el cuello de botella es la verificación)*
+- ✅ i-SCOOP, «Dark software factories and the future of autonomous software delivery» — <https://www.i-scoop.eu/dark-software-factories-and-the-future-of-autonomous-software-delivery/>
+  → [data/15-iscoop-dark-factories.md](data/15-iscoop-dark-factories.md) *(humanos «upstream and outward», generator ≠ judge, cualitativo sin cifras)*
 ## Evolución de la IA
 
 - ✅ SandGarden — <https://www.sandgarden.com/blog/the-evolution-of-ai-factories>
