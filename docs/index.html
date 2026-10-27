@@ -159,134 +159,28 @@
 
 <section data-num="06">
   <div class="badge">ESTACIÓN 2 · EL SDLC</div>
-  <div style="height:100%; display:flex; flex-direction:column; justify-content:center;">
-    <h2 style="font-size:56px; font-weight:800;">¿Qué es el SDLC?</h2>
-    <p class="apagado" style="font-size:26px; margin-top:14px;"><b style="color:var(--texto);">Software Development Life Cycle</b> — el ciclo de vida con el que se fabrica software:</p>
-    <div class="fila" style="margin-top:36px; gap:12px;">
-      <div class="estacion"><div class="num">01</div><div class="nombre" style="font-size:21px;">Idea</div></div>
-      <div class="estacion"><div class="num">02</div><div class="nombre" style="font-size:21px;">Diseño</div></div>
-      <div class="estacion"><div class="num">03</div><div class="nombre" style="font-size:21px;">Código</div></div>
-      <div class="estacion"><div class="num">04</div><div class="nombre" style="font-size:21px;">Revisión</div></div>
-      <div class="estacion"><div class="num">05</div><div class="nombre" style="font-size:21px;">Producción</div></div>
-      <div class="estacion"><div class="num">06</div><div class="nombre" style="font-size:21px;">Monitor</div></div>
-    </div>
-    <div class="cinta" style="margin-top:40px;"></div>
-    <p style="font-size:24px; margin-top:36px;">Un <b>ciclo</b>: lo que aprendes en producción vuelve a la idea. Y cada vuelta puede durar <span class="ambar">semanas… o minutos</span>.</p>
-  </div>
-  <aside class="notes">⏱ 10–11'. Para no programadores: «el SDLC es la cadena de montaje del software — de la queja del usuario al despliegue y vuelta». Presenta las 6 palabras que usaremos toda la charla. No detenerse: el dibujo real viene ahora.</aside>
-</section>
-
-<!-- 7 · FASE 1 -->
-<section data-num="07">
-  <div class="badge">ESTACIÓN 2 · EL SDLC — 1/4</div>
-  <h2 style="font-size:40px; font-weight:800; margin-top:14px;">Fase 1 · La demanda y la dirección</h2>
-  <div class="fila" style="margin-top:14px; gap:26px; align-items:flex-start;">
-    <div class="lupa" style="flex:1.3;">
-      <img src="assets/img/aran-dex-software-factory-2022.jpg" alt="A Software Factory Circa 2022" style="width:100%; display:block; border-radius:12px; border:1px solid var(--borde);">
-      <div class="ventana" style="left:2%; top:24%; width:28%; height:39%;"></div>
-    </div>
-    <div class="rutas" style="flex:1;">
-      <div class="ruta"><b>USERS</b> <span class="f">→</span> quejas · feature requests</div>
-      <div class="ruta"><b>quejas / requests</b> <span class="f">→</span> CEO / Vision <span class="lb">LOOP #2</span></div>
-      <div class="ruta"><b>CEO / Vision</b> <span class="f">→</span> Product Managers</div>
-      <div class="ruta"><b>Product Managers</b> <span class="f">→</span> Engineers</div>
-      <div class="ruta"><b>Engineers</b> <span class="f">→</span> stuff to do</div>
-    </div>
-  </div>
-  <aside class="notes">⏱ 12–13.5' · FASE 1: la demanda y la dirección. Todo empieza en USERS (quejas y peticiones) y sube por LOOP #2 hasta CEO/Vision; de ahí baja: PMs deciden qué hacer, Engineers lo apuntan como stuff to do. Aún no hay código: es la mitad «humana» de la fábrica.</aside>
-</section>
-
-<!-- 8 · FASE 2 -->
-<section data-num="08">
-  <div class="badge">ESTACIÓN 2 · EL SDLC — 2/4</div>
-  <h2 style="font-size:40px; font-weight:800; margin-top:14px;">Fase 2 · El build</h2>
-  <div class="fila" style="margin-top:14px; gap:26px; align-items:flex-start;">
-    <div class="lupa" style="flex:1.3;">
-      <img src="assets/img/aran-dex-software-factory-2022.jpg" alt="A Software Factory Circa 2022" style="width:100%; display:block; border-radius:12px; border:1px solid var(--borde);">
-      <div class="ventana" style="left:27%; top:59%; width:33%; height:23%;"></div>
-    </div>
-    <div class="rutas" style="flex:1;">
-      <div class="ruta"><b>stuff to do</b> <span class="f">→</span> someone builds the thing</div>
-      <div class="ruta"><b>someone builds</b> <span class="f">→</span> automated testing</div>
-      <div class="ruta"><b>someone builds</b> <span class="f">→</span> manual testing (browser)</div>
-    </div>
-  </div>
-  <aside class="notes">⏱ 13.5–15' · FASE 2: el build. Someone builds the thing — nota el «someone»: en 2022 era una persona. Dos válvulas de calidad: tests automáticos y prueba manual en navegador.</aside>
-</section>
-
-<!-- 9 · FASE 3 -->
-<section data-num="09">
-  <div class="badge">ESTACIÓN 2 · EL SDLC — 3/4</div>
-  <h2 style="font-size:40px; font-weight:800; margin-top:14px;">Fase 3 · La revisión — el humano</h2>
-  <div class="fila" style="margin-top:14px; gap:26px; align-items:flex-start;">
-    <div class="lupa" style="flex:1.3;">
-      <img src="assets/img/aran-dex-software-factory-2022.jpg" alt="A Software Factory Circa 2022" style="width:100%; display:block; border-radius:12px; border:1px solid var(--borde);">
-      <div class="ventana" style="left:53%; top:48%; width:45%; height:45%;"></div>
-    </div>
-    <div class="rutas" style="flex:1;">
-      <div class="ruta"><b>someone builds</b> <span class="f">→</span> Pull request</div>
-      <div class="ruta"><b>Pull request</b> <span class="f">→</span> ci/cd checks</div>
-      <div class="ruta"><b>Pull request</b> <span class="f">→</span> unit testing</div>
-      <div class="ruta"><b>Pull request</b> <span class="f">→</span> static scanning · security</div>
-      <div class="ruta"><b>Pull request</b> <span class="f">→</span> human tests the change</div>
-      <div class="ruta"><b>Pull request</b> <span class="f">→</span> human reviews the change</div>
-      <div class="ruta"><b>Pull request</b> <span class="f">→</span> rollout / deployment</div>
-    </div>
-  </div>
-  <aside class="notes">⏱ 15–16.5' · FASE 3: la revisión — la estación MÁS humana de la fábrica. Todo lo construido pasa por el embudo del PR: checks automáticos y luego DOS puertas humanas (probar y revisar). Solo entonces sale a rollout. Aquí es donde el bloque 3 pondrá el foco.</aside>
-</section>
-
-<!-- 10 · FASE 4 -->
-<section data-num="10">
-  <div class="badge">ESTACIÓN 2 · EL SDLC — 4/4</div>
-  <h2 style="font-size:40px; font-weight:800; margin-top:14px;">Fase 4 · Operación y bucles</h2>
-  <div class="fila" style="margin-top:14px; gap:26px; align-items:flex-start;">
-    <div class="lupa" style="flex:1.3;">
-      <img src="assets/img/aran-dex-software-factory-2022.jpg" alt="A Software Factory Circa 2022" style="width:100%; display:block; border-radius:12px; border:1px solid var(--borde);">
-      <div class="ventana" style="left:30%; top:21%; width:69%; height:27%;"></div>
-    </div>
-    <div class="rutas" style="flex:1;">
-      <div class="ruta"><b>PR</b> <span class="f">→</span> rollout / deployment → PROD</div>
-      <div class="ruta"><b>PROD</b> <span class="f">→</span> MONITORING</div>
-      <div class="ruta"><b>MONITORING</b> <span class="f">→</span> incidents</div>
-      <div class="ruta"><b>incidents</b> <span class="f">→</span> Engineers — vuelta a empezar</div>
-      <div class="ruta"><b>LOOP</b> <span class="f">→</span> architecture proposal + sprint planning</div>
-      <div class="ruta"><b>LOOP #1</b> <span class="f">→</span> PR ↔ build</div>
-      <div class="ruta"><b>LOOP #2</b> <span class="f">→</span> users ↔ visión</div>
-    </div>
-  </div>
-  <aside class="notes">⏱ 16.5–18' · FASE 4: operación. PROD → MONITORING → incidents → vuelta a Engineers: el ciclo nunca se cierra. Y los 3 bucles del dibujo: planificar (LOOP), construir (LOOP #1) y aprender (LOOP #2). Tiempos del juego: build horas o días · review horas o días.</aside>
+  <video src="assets/video/sdlc.mp4" controls playsinline preload="metadata"
+         style="position:absolute; top:110px; left:60px; width:1160px; height:560px; object-fit:contain; background:#05070f; border-radius:14px; border:1px solid var(--borde);"></video>
+  <aside class="notes">⏱ 10–12'. Dale al play: el ciclo de vida del software, de la idea a producción y vuelta. No hay que explicar nada antes — el vídeo pone a todos en el mismo mapa. Al terminar, conecta: «ese ciclo ES la línea de montaje — ahora lo vemos dibujado por Dex Horthy, estación por estación».</aside>
 </section>
 
 <!-- 11 · LA FOTO COMPLETA -->
-<section data-num="11">
+<!-- 7 · ANEXO · MICROSERVICIOS -->
+<section data-num="07">
+  <div class="badge">ESTACIÓN 2 · ANEXO</div>
+  <img src="assets/img/monolito-vs-micro.png" alt="Monolito vs microservicios" style="position:absolute; inset:0; width:100%; height:100%; object-fit:contain; background:#0e1e3c;">
+  <aside class="notes">⏱ 12–15'. ANEXO: microservicios con esta infografía. Izquierda: el monolito (todo en uno: UI, lógica, datos, pagos, notificaciones) — ventajas: simple al inicio, fácil de desplegar; inconveniente: difícil de ESCALAR. Derecha: microservicios (dividir para vencer) — cada servicio con su ciclo y su BD, hablan por APIs; escalan independientes, fallas aisladas… PERO: REMARCA el coste — ① escalar requiere DevOps mucho más difíciles (CI/CD por servicio, monitorización, orquestación — Swarm/Kubernetes del nivel 3), ② gestión compleja de infraestructura = COSTE, ③ probar y monitorear es más difícil. Conclusión de la imagen: «no es que uno sea mejor: se cambia simplicidad inicial por escalabilidad y resiliencia a largo plazo». Y el puente: «¿quién opera todas esas cintas? — la IA. Vamos al siguiente nivel».</aside>
+</section>
+
+<section data-num="08">
   <div class="badge">ESTACIÓN 2 · EL SDLC — FOTO COMPLETA</div>
   <h2 style="font-size:40px; font-weight:800; margin-top:14px;">La foto completa</h2>
-  <img src="assets/img/aran-dex-software-factory-2022.jpg" alt="A Software Factory Circa 2022" style="width:100%; display:block; border-radius:12px; border:1px solid var(--borde); margin-top:12px;">
-  <p style="font-size:22px; margin-top:14px;"><b class="ambar">12 transiciones</b> · <b class="ambar">3 bucles</b> · <b class="apagado">2 tiempos: build y review, horas o días</b> — así se fabricaba software en 2022.</p>
-  <aside class="notes">⏱ 18–19'. La foto completa, ya recorrida fase a fase. Frase de cierre del bloque: «memorizad el DIBUJO, no las herramientas: las herramientas cambian — el ciclo no». Transición a microservicios: «¿y si en vez de una cinta… hay varias?».</aside>
+  <img src="assets/img/aran-dex-software-factory-2022.jpg" alt="A Software Factory Circa 2022" style="height:545px; width:auto; max-width:100%; display:block; margin:12px auto 0; border-radius:12px; border:1px solid var(--borde);">
+  <p style="font-size:22px; margin-top:10px;"><b class="ambar">12 transiciones</b> · <b class="ambar">3 bucles</b> · <b class="apagado">2 tiempos: build y review, horas o días</b> — así se fabricaba software en 2022.</p>
+  <aside class="notes">⏱ 15–17'. Recap del dibujo de Dex tras el anexo. Recorre el dibujo EN VIVO con la mano: usuarios → visión → PMs → engineers → build → PR (con las puertas humanas) → prod → monitoring → incidents → vuelta. Los 3 bucles y los tiempos: build y review, horas o días. Frase de cierre: «memorizad el DIBUJO, no las herramientas: las herramientas cambian — el ciclo no». Transición: «¿y si en vez de una cinta… hay varias?».</aside>
 </section>
 
 
-<section data-num="12">
-  <div class="badge">ESTACIÓN 2 · EL SDLC</div>
-  <h2 style="font-size:44px; font-weight:800; margin-top:26px;">Y si la app se parte en piezas: <span class="ambar">microservicios</span></h2>
-  <div class="fila" style="margin-top:36px; gap:30px; align-items:stretch;">
-    <div class="estacion" style="text-align:left; padding:30px 34px;">
-      <div style="font:700 15px var(--mono); letter-spacing:.2em; color:var(--apagado);">MONOLITO</div>
-      <p style="font-size:23px; margin-top:14px; line-height:1.5;">Una sola pieza: <b>una cinta</b>, un build, un despliegue, un monitor.</p>
-      <p class="apagado" style="font-size:19px; margin-top:12px;">Simple — hasta que duele.</p>
-    </div>
-    <div class="estacion" style="text-align:left; padding:30px 34px; border-color:var(--ambar);">
-      <div style="font:700 15px var(--mono); letter-spacing:.2em; color:var(--ambar);">MICROSERVICIOS</div>
-      <p style="font-size:23px; margin-top:14px; line-height:1.5;">Piezas pequeñas e independientes: <b>una cinta por servicio</b> — su build, su PR, su despliegue, su monitor.</p>
-      <p class="apagado" style="font-size:19px; margin-top:12px;">Se hablan por <b style="color:var(--texto);">contratos (APIs)</b> — web ↔ api ↔ base de datos, como la app que visteis en Docker.</p>
-    </div>
-  </div>
-  <div class="cinta" style="margin-top:44px;"></div>
-  <p style="font-size:23px; margin-top:34px;">La cinta se multiplica: <span class="ambar">más bucles que orquestar — y más estaciones donde la IA puede entrar.</span></p>
-  <aside class="notes">⏱ 17–19'. BREVE (2'): microservicios = partir la app en piezas con ciclo propio. Conecta con su charla de Docker (web/api/db). Y deja la frase puente al siguiente bloque: «más estaciones = más sitios donde poner un agente… ¿y si los ponemos en todas?».</aside>
-</section>
 
 </div></div>
 
