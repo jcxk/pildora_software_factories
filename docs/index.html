@@ -53,7 +53,7 @@
   /* ventana de terminal estilo código */
   .loopcode { font:600 30px/2 var(--mono); color:#e6edf3; letter-spacing:.01em; }
   .loopcode .kw { color:#ff7b72; } .loopcode .fn { color:#ffa657; }
-  .loopcode .bl { color:#79c0ff; } .loopcode .st { color:#e6edf3; }
+  .loopcode .bl { color:#79c0ff; } .loopcode .st { color:#e6edf3; } .loopcode .cm { color:#8b949e; }
   /* foco progresivo sobre el dibujo */
   .lupa { position:relative; overflow:hidden; }
   .lupa img { display:block; width:100%; border-radius:12px; border:1px solid var(--borde); }
@@ -144,29 +144,31 @@
 <section data-num="05">
   <div class="badge">ANEXO 1 · CRONOLOGÍA</div>
   <h2 style="font-size:44px; font-weight:800; margin-top:16px;">The Ralph loop <span class="apagado" style="font-size:24px; font-weight:600;">· jul 2025 · Geoffrey Huntley</span></h2>
-  <pre class="loopcode" style="margin-top:18px;"><span class="kw">while true; do</span>
+  <pre class="loopcode" style="margin-top:12px; font-size:24px; line-height:1.8;"><span class="cm"># each pass: fresh session + PRD.md + progress.txt</span>
+<span class="kw">while true; do</span>
     <span class="fn">opencode</span> <span class="bl">run -m</span> <span class="bl">opus-4-5</span> <span class="st">"$PROMPT"</span>
 <span class="kw">done</span></pre>
   <p class="apagado" style="font:500 14px var(--mono); margin-top:6px;">ralph.sh — ghuntley.com/ralph · «full hands-off vibe coding» · «it requires faith — and a belief in eventual consistency»</p>
-  <div class="fila" style="margin-top:22px; gap:22px; align-items:stretch;">
-    <div class="estacion" style="flex:1; text-align:left; padding:18px 24px;">
-      <div style="font:700 14px var(--mono); letter-spacing:.2em; color:var(--ambar);">WHAT IT DOES</div>
-      <p style="font-size:18px; margin-top:8px; line-height:1.4;">Feed the same spec to a headless agent, <b>in an infinite loop</b>. It iterates against tests and lint until it converges — <i>unattended</i>.</p>
+  <div class="fila" style="margin-top:14px; gap:20px; align-items:stretch;">
+    <div class="estacion" style="flex:1; text-align:left; padding:14px 20px;">
+      <div style="font:700 14px var(--mono); letter-spacing:.2em; color:var(--ambar);">🧠 FRESH MEMORY EACH PASS</div>
+      <p style="font-size:17px; margin-top:8px; line-height:1.4;">Every iteration starts a <b>brand-new session</b> — no <i>context rot</i>, no forgetting, no drift.</p>
     </div>
-    <div class="estacion" style="flex:1.2; text-align:left; padding:18px 24px;">
-      <div style="font:700 14px var(--mono); letter-spacing:.2em; color:var(--ambar);">THE MEME 🍩</div>
-      <p style="font-size:18px; margin-top:8px; line-height:1.4;">Named after <b>Ralph Wiggum</b>, The Simpsons' simpleton. Your agent <b>is</b> Ralph — sometimes brilliant, often dumb; you tolerate it and correct it.</p>
+    <div class="estacion" style="flex:1.15; text-align:left; padding:14px 20px;">
+      <div style="font:700 14px var(--mono); letter-spacing:.2em; color:var(--ambar);">📓 PRD + PROGRESS.TXT</div>
+      <p style="font-size:17px; margin-top:8px; line-height:1.4;">Reads the <b>requirements</b> and the <b>log</b> of the previous attempt: what was tried, what worked, what failed.</p>
     </div>
-    <div class="estacion" style="flex:1; text-align:left; padding:18px 24px;">
-      <div style="font:700 14px var(--mono); letter-spacing:.2em; color:var(--ambar);">WHY IT MATTERS</div>
-      <p style="font-size:18px; margin-top:8px; line-height:1.4;">A bash loop made self-running agents <b>mainstream</b> — <b>one step away from factories</b>.</p>
+    <div class="estacion" style="flex:1.15; text-align:left; padding:14px 20px;">
+      <div style="font:700 14px var(--mono); letter-spacing:.2em; color:var(--ambar);">🔁 LIVE · CODE · DIE · REPEAT</div>
+      <p style="font-size:17px; margin-top:8px; line-height:1.4;">Takes the top task, codes it, runs the <b>tests</b>, logs progress. Session dies? The next one picks up <b>from the notes</b>.</p>
     </div>
-    <div style="width:200px;">
-      <img src="assets/img/ralph-crop.jpg" alt="Ralph Wiggum" style="width:100%; height:210px; object-fit:cover; object-position:top; border-radius:14px; border:1px solid var(--borde);">
-      <p class="apagado" style="font-size:13px; margin-top:6px; text-align:center;">Ralph Wiggum — the namesake</p>
+    <div style="width:190px;">
+      <img src="assets/img/ralph-crop.jpg" alt="Ralph Wiggum" style="width:100%; height:172px; object-fit:cover; object-position:top; border-radius:14px; border:1px solid var(--borde);">
+      <p class="apagado" style="font-size:12px; margin-top:5px; text-align:center;">Ralph Wiggum — the namesake</p>
     </div>
   </div>
-  <aside class="notes">⏱ 8.5–10'. ANEXO de la cronología, en inglés (guiño al meme). El bucle: spec en PROMPT.md + opencode headless + bash infinito (versión de Huntley con claude-code). EL REMARQUE: «a partir de Ralph, la gente buscó agentes que corran solos — el loop auto se volvió mainstream. De aquí a las factories hay un paso». Matiz honesto: Devin (2024) ya era autónomo; Ralph lo hizo accesible a cualquiera. Citas: «full hands-off vibe coding» y «faith + eventual consistency».</aside>
+  <p style="font-size:18px; margin-top:14px; text-align:center;"><b class="ambar">Why it went viral:</b> friendly brute force — it grinds alone overnight. <b>Stubborn as Ralph:</b> hits the same wall (the tests) until it falls.</p>
+  <aside class="notes">⏱ 8.5–10'. ANEXO de la cronología, en inglés (guiño al meme). Cómo funciona, en 4 pasos: ① memoria limpia — cada vuelta arranca una sesión NUEVA del agente (adiós context rot, olvido y alucinación por desgaste); ② PRD + progress.txt — lee los requisitos y el diario del intento anterior (qué se intentó, qué funcionó, qué falló); ③ persistencia terca «Live, code, die, repeat» — toma la tarea más importante, codea, corre los tests y anota el avance; si la sesión muere, la siguiente sigue desde las notas actualizadas; ④ script sencillo — un bucle bash que repite la llamada hasta que los tests externos validan. Por qué se hizo viral: fuerza bruta con IA (trabaja solo horas/noches, mínima supervisión), evita el cansancio del modelo, y la filosofía Ralph Wiggum — no es un genio, es un trabajador incansable que golpea la misma pared (los tests) hasta derribarla. EL REMARQUE: «a partir de Ralph, la gente buscó agentes que corran solos — el loop auto se volvió mainstream. De aquí a las factories hay un paso». Matiz honesto: Devin (2024) ya era autónomo; Ralph lo hizo accesible a cualquiera. Citas: «full hands-off vibe coding» y «faith + eventual consistency».</aside>
 </section>
 
 <!-- 6 · ANEXO 2 · DEL LOOP A LA FACTORY -->
