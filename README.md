@@ -24,7 +24,8 @@ recuperable con `git checkout pildora-docker`.
    recompensa), y las 4 fases de Dex para encender las luces. **Construido** (diapositivas
    10–20): arco lights-off de Dex, datos Faros, la causa y las 4 fases.
 4. **Kahoot (8')** — 10 preguntas redactadas en
-   [`docs/kahoot-preguntas.md`](docs/kahoot-preguntas.md) (pendientes de subir vía MCP).
+   preguntas del Kahoot **guardadas en un fichero local fuera del repo**
+   `docs/kahoot-preguntas.local.md` (privadas — ver `.gitignore`; pendientes de subir vía MCP).
    **Cierre (2')** — recap + fuentes. **Construido** (recap + anexo 3 del ecosistema
    open source + fuentes: diapositivas 21–23).
 
@@ -33,7 +34,7 @@ recuperable con `git checkout pildora-docker`.
 | Ruta | Contenido |
 |------|-----------|
 | `docs/index.html` | La baraja (reveal.js + fuentes locales). **En construcción** — bloques 1–3 y cierre construidos (diapositivas 01–23); falta el Kahoot vía MCP. |
-| `docs/kahoot-preguntas.md` | Las 10 preguntas del Kahoot (+ suplentes), listas para subir vía MCP. |
+| `docs/kahoot-preguntas.local.md` | *(local, gitignored)* Las preguntas del Kahoot (+ suplentes y doble-puntos), listas para subir vía MCP. No está en GitHub a propósito. |
 | `AGENTS.md` | Objetivo, estructura y fuentes de la charla (leer primero). |
 | `docs/SOURCES.md` | Las fuentes con estado de extracción (incl. awesome-software-factories → anexo 3). |
 | `docs/data/` | Extracción de datos fuente a fuente (01–16), incluida la tabla comparativa y las métricas SWE-bench. |
@@ -60,7 +61,8 @@ cd tools && node capturas.mjs && ./export_pdf.sh
 
 - Bloque 3 «La IA en el SDLC» construido (diapositivas 10–20: arco lights-off de Dex,
   datos Faros, la causa y las 4 fases).
-- Kahoot: preguntas listas en `docs/kahoot-preguntas.md`; subir vía MCP (servidor
+- Kahoot: preguntas listas en el fichero local `docs/kahoot-preguntas.local.md`
+  (fuera del repo); subir vía MCP (servidor
   configurado en `~/.zcode/cli/config.json`).
 - `docs/notas-orador.md` (volcar los `aside.notes`/`notes.json`), revisión del autor
   y export PDF (`tools/capturas.mjs` + `export_pdf.sh`).

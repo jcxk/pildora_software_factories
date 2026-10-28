@@ -12,3 +12,7 @@ node_modules/
 # Build artifacts / renders
 tools/out/
 *.pdf.tmp
+
+# Kahoot: preguntas privadas — jamás commitear
+docs/kahoot-preguntas.local.md
+.history/
