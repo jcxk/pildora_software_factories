@@ -18,7 +18,7 @@ Estado: ✅ extraída · 🟡 parcial · ❌ no accesible
 - ✅ Pragmatic Engineer — <https://newsletter.pragmaticengineer.com/p/context-engineering-with-dex-horthy>
   → [data/06-pragmatic-engineer-interview.md](data/06-pragmatic-engineer-interview.md)
 - ✅ Addy Osmani, «Software Factories, Light and Dark» — <https://addyosmani.com/blog/software-factories/>
-  → [data/07-addy-osmani.md](data/07-addy-osmani.md)
+  → [data/07-addy-osmani.md](data/07-addy-osmani.md) *(su diagrama `loop-harness-factory.svg` está descargado en [docs/assets/img/](assets/img/) y usado en el anexo 2 de la baraja)*
 - ✅ aran.dev, «Software Factories» (diagramas clave) — <https://aran.dev/posts/software-factories/>
   → [data/08-aran-dev-diagrams.md](data/08-aran-dev-diagrams.md) · **5 diagramas descargados** en [docs/assets/img/](assets/img/): `aran-dex-software-factory-2022.jpg`, `aran-dex-agentic-software-factory.jpg`, `aran-pragmatic-agentic-software-factory.png`, `aran-software-factory-feedback-loop.png`, `aran-agentic-software-factory.png`
 - ✅ Yahoo Tech — <https://tech.yahoo.com/ai/articles/why-software-factories-back-age-212333194.html>
@@ -31,6 +31,13 @@ Estado: ✅ extraída · 🟡 parcial · ❌ no accesible
   → [data/12-csharpcorner-table.md](data/12-csharpcorner-table.md) *(tabla «Traditional vs AI Coding Assistants vs AI Software Factories» en markdown)*
 - ✅ Recursive AI — <https://recursiveai.org/research/alera-library-factory/>
   → [data/14-recursiveai-alera.md](data/14-recursiveai-alera.md) *(caso real Alera: atención humana 34h→3h, v1.0 rota a los 46', control externo fijo)*
+
+- 🟡 Ensayo wsff (HumanLayer) — <https://github.com/humanlayer/advanced-context-engineering-for-coding-agents/blob/main/wsff.md>
+  *(extracto «the lights-off software factory»: 8 fotogramas del diagrama agéntico descargados como `dex-*.jpg` en [docs/assets/img/](assets/img/); base de las diapositivas 09–16)*
+- 🟡 Dan Shapiro, «The five levels from spicy autocomplete to the software factory» — <https://www.danshapiro.com/blog/2026/01/the-five-levels-from-spicy-autocomplete-to-the-software-factory/>
+  *(origen del término lights-off; solo citada, diapositiva 15)*
+- 🟡 Simon Willison, «Software factory» (implementación de StrongDM) — <https://simonwillison.net/2026/Feb/7/software-factory/>
+  *(solo citada, diapositiva 15)*
 
 ## Dark factory
 - ✅ Differ, «What is a dark software factory?» — <https://blog.getdiffer.com/what-is-a-dark-software-factory>

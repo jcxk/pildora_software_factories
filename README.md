@@ -6,7 +6,8 @@ apaga el criterio humano. Inspirada en el talk de Dex Horthy (HumanLayer),
 *«Harness Engineering is not enough: why software factories fail»* (AI Engineer World's Fair 2026).
 
 **Estado: en construcción.** Baraja reveal.js en `docs/index.html` — se abre en el navegador
-(flechas o teclado). La píldora anterior de Docker/microservicios está retirada:
+(flechas o teclado). **Publicada en GitHub Pages:** <https://jcxk.github.io/pildora_software_factories/>
+(desde `docs/`). La píldora anterior de Docker/microservicios está retirada:
 recuperable con `git checkout pildora-docker`.
 
 ## Estructura de la charla (45', 4 bloques)
@@ -20,15 +21,18 @@ recuperable con `git checkout pildora-docker`.
    y microservicios en clave ligera.
 3. **La IA en el SDLC (12')** — light factory vs dark factory, los datos (Faros AI,
    FrontierCode, SlopCodeBench, Alera), la causa (la mantenibilidad no está en la
-   recompensa), y las 4 fases de Dex para encender las luces. **Pendiente de construir.**
-4. **Kahoot (8')** — 10 preguntas vía MCP. **Pendiente de crear.**
-   **Cierre (2')** — recap + fuentes. **Pendiente.**
+   recompensa), y las 4 fases de Dex para encender las luces. **Construido** (diapositivas
+   10–20): arco lights-off de Dex, datos Faros, la causa y las 4 fases.
+4. **Kahoot (8')** — 10 preguntas redactadas en
+   [`docs/kahoot-preguntas.md`](docs/kahoot-preguntas.md) (pendientes de subir vía MCP).
+   **Cierre (2')** — recap + fuentes. **Construido** (diapositivas 21–22).
 
 ## Qué hay en el repo
 
 | Ruta | Contenido |
 |------|-----------|
-| `docs/index.html` | La baraja (reveal.js + fuentes locales). **En construcción** — faltan los bloques 3, Kahoot y cierre. |
+| `docs/index.html` | La baraja (reveal.js + fuentes locales). **En construcción** — bloques 1–3 y cierre construidos (diapositivas 01–22); falta el Kahoot vía MCP. |
+| `docs/kahoot-preguntas.md` | Las 10 preguntas del Kahoot (+ suplentes), listas para subir vía MCP. |
 | `AGENTS.md` | Objetivo, estructura y fuentes de la charla (leer primero). |
 | `docs/SOURCES.md` | Las 15 fuentes con estado de extracción. |
 | `docs/data/` | Extracción de datos fuente a fuente (01–16), incluida la tabla comparativa y las métricas SWE-bench. |
@@ -42,6 +46,8 @@ recuperable con `git checkout pildora-docker`.
 # verla: abrir docs/index.html en el navegador (o:)
 cd docs && python3 -m http.server 8000   # → http://localhost:8000
 
+# temporizador (HUD abajo-izquierda): clic = iniciar/pausar · ↺ = reset · tecla T = ocultar/mostrar
+
 # regenerar el roadmap-imagen (tras editar tools/roadmap-slide.mjs):
 cd tools && node roadmap-slide.mjs
 
@@ -51,6 +57,9 @@ cd tools && node capturas.mjs && ./export_pdf.sh
 
 ## Pendiente
 
-- Bloque 3 «La IA en el SDLC» (~6 diapositivas), Kahoot (vía MCP — servidor configurado
-  en `~/.zcode/cli/config.json`), cierre + fuentes, timer HUD, `docs/notas-orador.md`,
-  revisión del autor, export PDF y publicación (Pages) **solo cuando el autor lo diga**.
+- Bloque 3 «La IA en el SDLC» construido (diapositivas 10–20: arco lights-off de Dex,
+  datos Faros, la causa y las 4 fases).
+- Kahoot: preguntas listas en `docs/kahoot-preguntas.md`; subir vía MCP (servidor
+  configurado en `~/.zcode/cli/config.json`).
+- `docs/notas-orador.md` (volcar los `aside.notes`/`notes.json`), revisión del autor
+  y export PDF (`tools/capturas.mjs` + `export_pdf.sh`).
