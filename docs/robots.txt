@@ -1,0 +1,3 @@
+# Sitio privado (baraja interna) — no indexar
+User-agent: *
+Disallow: /
