@@ -25,16 +25,17 @@ recuperable con `git checkout pildora-docker`.
    10–20): arco lights-off de Dex, datos Faros, la causa y las 4 fases.
 4. **Kahoot (8')** — 10 preguntas redactadas en
    [`docs/kahoot-preguntas.md`](docs/kahoot-preguntas.md) (pendientes de subir vía MCP).
-   **Cierre (2')** — recap + fuentes. **Construido** (diapositivas 21–22).
+   **Cierre (2')** — recap + fuentes. **Construido** (recap + anexo 3 del ecosistema
+   open source + fuentes: diapositivas 21–23).
 
 ## Qué hay en el repo
 
 | Ruta | Contenido |
 |------|-----------|
-| `docs/index.html` | La baraja (reveal.js + fuentes locales). **En construcción** — bloques 1–3 y cierre construidos (diapositivas 01–22); falta el Kahoot vía MCP. |
+| `docs/index.html` | La baraja (reveal.js + fuentes locales). **En construcción** — bloques 1–3 y cierre construidos (diapositivas 01–23); falta el Kahoot vía MCP. |
 | `docs/kahoot-preguntas.md` | Las 10 preguntas del Kahoot (+ suplentes), listas para subir vía MCP. |
 | `AGENTS.md` | Objetivo, estructura y fuentes de la charla (leer primero). |
-| `docs/SOURCES.md` | Las 15 fuentes con estado de extracción. |
+| `docs/SOURCES.md` | Las fuentes con estado de extracción (incl. awesome-software-factories → anexo 3). |
 | `docs/data/` | Extracción de datos fuente a fuente (01–16), incluida la tabla comparativa y las métricas SWE-bench. |
 | `docs/data/roadmap-evolucion.md` | El roadmap en Mermaid (revisión de contenido) + render usado. |
 | `docs/assets/img/` | Diagramas (Dex, aran.dev), imágenes de la charla, roadmap renderizado. |

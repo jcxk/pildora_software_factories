@@ -38,6 +38,8 @@ Estado: ✅ extraída · 🟡 parcial · ❌ no accesible
   *(origen del término lights-off; solo citada, diapositiva 15)*
 - 🟡 Simon Willison, «Software factory» (implementación de StrongDM) — <https://simonwillison.net/2026/Feb/7/software-factory/>
   *(solo citada, diapositiva 15)*
+- 🟡 Awesome Software Factories — <https://github.com/varun1505/awesome-software-factories>
+  *(curaduría del ecosistema: ~100 proyectos — factories open source, pipelines ticket→PR, loops Ralph, sandboxes, gates; sección clave: <https://github.com/varun1505/awesome-software-factories#open-source-factories>; base del anexo 3 de la baraja — sandcastle, OpenHands, Cline, Aider, SWE-agent, MetaGPT, AutoGPT, Symphony, claude-squad; las estrellas de la diapositiva verificadas vía API de GitHub a oct 2026; sandcastle: <https://github.com/mattpocock/sandcastle>)*
 
 ## Dark factory
 - ✅ Differ, «What is a dark software factory?» — <https://blog.getdiffer.com/what-is-a-dark-software-factory>
