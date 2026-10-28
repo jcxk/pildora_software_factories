@@ -23,9 +23,11 @@ recuperable con `git checkout pildora-docker`.
    FrontierCode, SlopCodeBench, Alera), la causa (la mantenibilidad no está en la
    recompensa), y las 4 fases de Dex para encender las luces. **Construido** (diapositivas
    10–20): arco lights-off de Dex, datos Faros, la causa y las 4 fases.
-4. **Kahoot (8')** — 10 preguntas redactadas en
-   preguntas del Kahoot **guardadas en un fichero local fuera del repo**
-   `docs/kahoot-preguntas.local.md` (privadas — ver `.gitignore`; pendientes de subir vía MCP).
+4. **Kahoot (8')** — ✅ **creado en Kahoot vía MCP**: quiz de 9 preguntas
+   (+3 suplentes) · 20 s/pregunta · doble-puntos en la 3 y la 7. UUID
+   `f51c3152-6353-4f3d-a681-310fdaa30225`. Las preguntas viven en el fichero local
+   `docs/kahoot-preguntas.local.md` (privadas — ver `.gitignore`). Pendiente manual:
+   marcar el doble-puntos en el editor de Kahoot (la API no lo soporta).
    **Cierre (2')** — recap + fuentes. **Construido** (recap + anexo 3 del ecosistema
    open source + fuentes: diapositivas 21–23).
 
@@ -33,8 +35,8 @@ recuperable con `git checkout pildora-docker`.
 
 | Ruta | Contenido |
 |------|-----------|
-| `docs/index.html` | La baraja (reveal.js + fuentes locales). **En construcción** — bloques 1–3 y cierre construidos (diapositivas 01–23); falta el Kahoot vía MCP. |
-| `docs/kahoot-preguntas.local.md` | *(local, gitignored)* Las preguntas del Kahoot (+ suplentes y doble-puntos), listas para subir vía MCP. No está en GitHub a propósito. |
+| `docs/index.html` | La baraja (reveal.js + fuentes locales). **En construcción** — bloques 1–3 y cierre construidos (diapositivas 01–23); Kahoot ya creado en Kahoot (falta doble-puntos manual). |
+| `docs/kahoot-preguntas.local.md` | *(local, gitignored)* Las preguntas del Kahoot (+ suplentes, doble-puntos y UUID del quiz creado). No está en GitHub a propósito. |
 | `AGENTS.md` | Objetivo, estructura y fuentes de la charla (leer primero). |
 | `docs/SOURCES.md` | Las fuentes con estado de extracción (incl. awesome-software-factories → anexo 3). |
 | `docs/data/` | Extracción de datos fuente a fuente (01–16), incluida la tabla comparativa y las métricas SWE-bench. |
@@ -61,8 +63,8 @@ cd tools && node capturas.mjs && ./export_pdf.sh
 
 - Bloque 3 «La IA en el SDLC» construido (diapositivas 10–20: arco lights-off de Dex,
   datos Faros, la causa y las 4 fases).
-- Kahoot: preguntas listas en el fichero local `docs/kahoot-preguntas.local.md`
-  (fuera del repo); subir vía MCP (servidor
-  configurado en `~/.zcode/cli/config.json`).
+- Kahoot: ✅ creado vía MCP — quiz `f51c3152-6353-4f3d-a681-310fdaa30225`
+  (9 preguntas, 20 s). Pendiente: doble-puntos manual en las preguntas 3 y 7 desde
+  <https://create.kahoot.it/creator/f51c3152-6353-4f3d-a681-310fdaa30225>.
 - `docs/notas-orador.md` (volcar los `aside.notes`/`notes.json`), revisión del autor
   y export PDF (`tools/capturas.mjs` + `export_pdf.sh`).
