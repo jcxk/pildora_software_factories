@@ -7,7 +7,7 @@ Lo marcado 🔥 es el *trending* actual según las fuentes.
 ```mermaid
 timeline
     title La evolución de la IA en el software — hacia las software factories
-    1969 : Nace el concepto : Software factory — Hitachi : Canonizado por Cusumano (1989)
+    1969 : Primera implantación : Software factory — Hitachi, Japón : Término acuñado en la OTAN (1968) · Canonizado por Cusumano (1989)
     2018 : Completions en el IDE : Codota / Tabnine : Primera IA que autocompleta código
     2020 : Prompts básicos : GPT-3 API : El prompt engineering nace como oficio
     2021 : GitHub Copilot (preview) : Autocompletado masivo : GA en 2022 · CodeWhisperer (AWS) 2022
@@ -23,7 +23,7 @@ timeline
 ## Notas de revisión
 
 - Orden cronológico estricto con fechas (petición: primera parte de la charla = evolución en tiempo).
-- **11 hitos**: los 10 verificados + el concepto industrial de 1969 que abre el gancho.
+- **11 hitos**: los 10 verificados + la primera implantación de 1969 que abre el gancho (el término lo acuñó la OTAN en 1968 — Garmisch/Bemer —; Hitachi fue la primera fábrica real).
 - 2024 agrupa Devin (mar) y MCP (nov); feb 2025 agrupa vibe coding con Claude Code/Codex para no trocear el año.
 - El 🔥 hoy conecta directo con el bloque 3 (por qué fracasan, tesis de Dex Horthy).
 - En la baraja, cada hito será una diapositiva-estación de la cinta de montaje con su referencia; este Mermaid es el mapa previo para revisar contenido, no el diseño final.

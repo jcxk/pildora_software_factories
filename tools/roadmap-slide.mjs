@@ -1,7 +1,7 @@
 import { chromium } from 'playwright';
 // Línea A (arriba): orígenes → 2023 · Línea B (abajo): 2025 → 2026
 const lineaA = [
- ['1969','SOFTWARE FACTORY','Hitachi · Cusumano (1989)'],
+ ['1968','«SOFTWARE FACTORY»','término: OTAN · 1ª fábrica: Hitachi (1969)'],
  ['2021','IA PROGRAMA','Copilot — tras Tabnite 18 · GPT-3 20'],
  ['2022','IA MAINSTREAM','ChatGPT — el chat para todos'],
  ['2023','MULTI-AGENTES','MetaGPT · AutoGen · CrewAI'],

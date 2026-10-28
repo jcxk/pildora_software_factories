@@ -13,7 +13,8 @@ recuperable con `git checkout pildora-docker`.
 ## Estructura de la charla (45', 4 bloques)
 
 1. **INTRO · Cronología (10')** — gancho «un individuo puede automatizar y replicar una
-   empresa entera» + roadmap 1969→2026: el concepto de *software factory* (Hitachi), las
+   empresa entera» + roadmap 1969→2026: la primera *software factory* (Hitachi, 1969;
+   término acuñado en la OTAN, 1968), las
    completions (Tabnine), Copilot, ChatGPT, multi-agentes, agent loops, CLI harness,
    vibe coding, Ralph loop, SDD — hasta las factories de hoy.
 2. **SDLC (13')** — el ciclo **tal como lo dibuja Dex Horthy** («A Software Factory
