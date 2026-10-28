@@ -6,7 +6,8 @@ set -e
 cd "$(dirname "$0")"
 
 SLIDES=out/slides-pdf
-SALIDA=../docs/pdf/software-factories-con-ia.pdf
+TS=$(date +%Y%m%d)
+SALIDA=../docs/pdf/software-factories-con-ia_$TS.pdf
 
 rm -rf "$SLIDES" && mkdir -p "$SLIDES" "$(dirname "$SALIDA")"
 HIDE_HUD=1 node capturas.mjs "$SLIDES" >/dev/null
@@ -30,4 +31,7 @@ with open(salida, 'wb') as fh:
     w.write(fh)
 EOF
 rm -rf "$TMP"
+# solo queda la versión más reciente en docs/pdf/ y la portada apunta a ella
+find "$(dirname "$SALIDA")" -name 'software-factories-con-ia_*.pdf' ! -path "$SALIDA" -delete
+sed -i '' "s|pdf/software-factories-con-ia[^\"']*\.pdf|pdf/$(basename "$SALIDA")|" ../docs/index.html
 echo "OK: $SALIDA ($(ls "$SLIDES"/slide-*.png | wc -l | tr -d ' ') páginas)"

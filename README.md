@@ -8,7 +8,8 @@ apaga el criterio humano. Inspirada en el talk de Dex Horthy (HumanLayer),
 **Estado: en construcción.** La **presentación** (reveal.js) está en `docs/deck/index.html` —
 la raíz de Pages es una **portada** (`docs/index.html`) que enlaza a la presentación y al PDF.
 **Publicada en GitHub Pages:** <https://jcxk.github.io/pildora_software_factories/>
-(desde `docs/`) · presentación directa: `/deck/` · PDF: `/pdf/software-factories-con-ia.pdf`.
+(desde `docs/`) · presentación directa: `/deck/` · PDF: `/pdf/software-factories-con-ia_<fecha>.pdf` ·
+el Kahoot se abre desde la tarjeta «Jugar al Kahoot» de la portada.
 La píldora anterior de Docker/microservicios está retirada:
 recuperable con `git checkout pildora-docker`.
 
@@ -46,7 +47,7 @@ recuperable con `git checkout pildora-docker`.
 | `docs/data/` | Extracción de datos fuente a fuente (01–16), incluida la tabla comparativa y las métricas SWE-bench. |
 | `docs/data/roadmap-evolucion.md` | El roadmap en Mermaid (revisión de contenido) + render usado. |
 | `docs/deck/assets/img/` | Diagramas (Dex, aran.dev), imágenes de la charla, roadmap renderizado. |
-| `docs/pdf/` | El PDF exportado de la baraja (`software-factories-con-ia.pdf`, 23 páginas). |
+| `docs/pdf/` | El PDF exportado de la baraja (`software-factories-con-ia_<fecha>.pdf`, 23 páginas — un solo fichero, se regenera con fecha). |
 | `tools/` | Pipeline: `capturas.mjs` (screenshots + notas; `HIDE_HUD=1` sin timer), `export_pdf.sh` (PDF a `docs/pdf/`), `roadmap-slide.mjs` (regenera el roadmap-imagen), `spot.mjs`/`node -e` para checks puntuales. |
 
 ## Cómo trabajar con la baraja
