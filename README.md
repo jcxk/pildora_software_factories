@@ -5,9 +5,11 @@ programación): cómo la IA ha llegado a las *software factories* y por qué fra
 apaga el criterio humano. Inspirada en el talk de Dex Horthy (HumanLayer),
 *«Harness Engineering is not enough: why software factories fail»* (AI Engineer World's Fair 2026).
 
-**Estado: en construcción.** Baraja reveal.js en `docs/index.html` — se abre en el navegador
-(flechas o teclado). **Publicada en GitHub Pages:** <https://jcxk.github.io/pildora_software_factories/>
-(desde `docs/`). La píldora anterior de Docker/microservicios está retirada:
+**Estado: en construcción.** La **presentación** (reveal.js) está en `docs/deck/index.html` —
+la raíz de Pages es una **portada** (`docs/index.html`) que enlaza a la presentación y al PDF.
+**Publicada en GitHub Pages:** <https://jcxk.github.io/pildora_software_factories/>
+(desde `docs/`) · presentación directa: `/deck/` · PDF: `/pdf/software-factories-con-ia.pdf`.
+La píldora anterior de Docker/microservicios está retirada:
 recuperable con `git checkout pildora-docker`.
 
 ## Estructura de la charla (45', 4 bloques)
@@ -36,28 +38,30 @@ recuperable con `git checkout pildora-docker`.
 
 | Ruta | Contenido |
 |------|-----------|
-| `docs/index.html` | La baraja (reveal.js + fuentes locales). **En construcción** — bloques 1–3 y cierre construidos (diapositivas 01–23); Kahoot ya creado en Kahoot (falta doble-puntos manual). |
+| `docs/index.html` | **Portada** de Pages: enlaza a la presentación HTML y al PDF (tema oscuro, motivo de línea de montaje). |
+| `docs/deck/index.html` | La baraja (reveal.js + fuentes locales, en `docs/deck/assets/`). **En construcción** — bloques 1–3 y cierre construidos (diapositivas 01–23); Kahoot ya creado en Kahoot (falta doble-puntos manual). |
 | `docs/kahoot-preguntas.local.md` | *(local, gitignored)* Las preguntas del Kahoot (+ suplentes, doble-puntos y UUID del quiz creado). No está en GitHub a propósito. |
 | `AGENTS.md` | Objetivo, estructura y fuentes de la charla (leer primero). |
 | `docs/SOURCES.md` | Las fuentes con estado de extracción (incl. awesome-software-factories → anexo 3). |
 | `docs/data/` | Extracción de datos fuente a fuente (01–16), incluida la tabla comparativa y las métricas SWE-bench. |
 | `docs/data/roadmap-evolucion.md` | El roadmap en Mermaid (revisión de contenido) + render usado. |
-| `docs/assets/img/` | Diagramas (Dex, aran.dev), imágenes de la charla, roadmap renderizado. |
-| `tools/` | Pipeline: `capturas.mjs` (screenshots + notas), `export_pdf.sh` (PDF), `roadmap-slide.mjs` (regenera el roadmap-imagen), `spot.mjs`/`node -e` para checks puntuales. |
+| `docs/deck/assets/img/` | Diagramas (Dex, aran.dev), imágenes de la charla, roadmap renderizado. |
+| `docs/pdf/` | El PDF exportado de la baraja (`software-factories-con-ia.pdf`, 23 páginas). |
+| `tools/` | Pipeline: `capturas.mjs` (screenshots + notas; `HIDE_HUD=1` sin timer), `export_pdf.sh` (PDF a `docs/pdf/`), `roadmap-slide.mjs` (regenera el roadmap-imagen), `spot.mjs`/`node -e` para checks puntuales. |
 
 ## Cómo trabajar con la baraja
 
 ```bash
-# verla: abrir docs/index.html en el navegador (o:)
-cd docs && python3 -m http.server 8000   # → http://localhost:8000
+# verla: abrir docs/deck/index.html en el navegador (o:)
+cd docs/deck && python3 -m http.server 8000   # → http://localhost:8000
 
 # temporizador (HUD abajo-izquierda): clic = iniciar/pausar · ↺ = reset · tecla T = ocultar/mostrar
 
 # regenerar el roadmap-imagen (tras editar tools/roadmap-slide.mjs):
 cd tools && node roadmap-slide.mjs
 
-# PDF (al cerrar la baraja):
-cd tools && node capturas.mjs && ./export_pdf.sh
+# regenerar el PDF (auto-captura sin HUD → docs/pdf/):
+cd tools && ./export_pdf.sh
 ```
 
 ## Pendiente

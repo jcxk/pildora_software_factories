@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Software factories con IA</title>
+<!-- privado: no indexar en buscadores -->
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="assets/reveal/reveal.css">
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<style>
+  :root {
+    --fondo:#0b1026; --panel:#151d42; --borde:#263058;
+    --texto:#e8ecff; --apagado:#8b93b8; --ambar:#f0b429;
+    --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+    --titulos:"Space Grotesk",system-ui,sans-serif; --cuerpo:Inter,system-ui,sans-serif;
+  }
+  html,body { overflow:hidden; background:#05070f; }
+  .reveal .backgrounds, .reveal .slide-background, .reveal .slide-background-content { background:transparent; }
+  .reveal .slide-background.present { background:var(--fondo); }
+  .reveal-viewport { background:#05070f; }
+  .reveal .slides section, .reveal .slides section * { box-sizing:border-box; }
+  .reveal { font-size:28px; }
+  .reveal .slides { text-align:left; }
+  .reveal .slides section {
+    width:100%; height:100%; padding:70px 90px;
+    background: radial-gradient(1100px 600px at 85% -10%, #1a2452 0%, transparent 55%), var(--fondo);
+    color:var(--texto); font-family:var(--cuerpo);
+  }
+  .reveal .slides section::after {
+    content:attr(data-num); position:absolute; right:28px; bottom:22px; z-index:3;
+    font:16px var(--mono); color:var(--apagado);
+  }
+  .reveal h1,.reveal h2 { font-family:var(--titulos); text-transform:none; letter-spacing:0; margin:0; }
+  .ambar { color:var(--ambar); }
+  .apagado { color:var(--apagado); }
+  /* motivo: cinta de montaje */
+  .cinta { height:8px; border-radius:4px; position:relative;
+    background:linear-gradient(90deg,var(--borde),#3a4478 60%,var(--ambar)); }
+  .cinta::after { content:''; position:absolute; inset:0;
+    background:repeating-linear-gradient(90deg,transparent 0 26px,rgba(11,16,38,.55) 26px 34px); }
+  .badge { position:absolute; top:44px; left:90px; z-index:3;
+    font:700 15px var(--mono); letter-spacing:.18em; color:var(--ambar);
+    border:1.5px solid var(--ambar); border-radius:8px; padding:7px 14px;
+    background:rgba(240,180,41,.12); }
+  .estacion { flex:1; text-align:center; padding:22px 10px;
+    background:var(--panel); border:1px solid var(--borde); border-radius:14px; }
+  .estacion .num { font:700 15px var(--mono); color:var(--apagado); letter-spacing:.2em; }
+  .estacion .nombre { font-size:26px; font-weight:800; margin-top:8px; }
+  .estacion .que { font-size:17px; color:var(--apagado); margin-top:6px; line-height:1.3; }
+  .fila { display:flex; gap:22px; }
+  .fondo-img { position:absolute; top:175px; bottom:28px; left:45px; right:45px;
+    width:calc(100% - 90px); height:calc(100% - 203px); object-fit:contain; }
+  /* ventana de terminal estilo código */
+  .loopcode { font:600 30px/2 var(--mono); color:#e6edf3; letter-spacing:.01em; }
+  .loopcode .kw { color:#ff7b72; } .loopcode .fn { color:#ffa657; }
+  .loopcode .bl { color:#79c0ff; } .loopcode .st { color:#e6edf3; } .loopcode .cm { color:#8b949e; }
+  /* foco progresivo sobre el dibujo */
+  .lupa { position:relative; overflow:hidden; }
+  .lupa img { display:block; width:100%; border-radius:12px; border:1px solid var(--borde); }
+  .lupa .ventana { position:absolute; border:2.5px solid var(--ambar); border-radius:10px;
+    box-shadow:0 0 0 9999px rgba(5,7,15,.88), 0 0 34px rgba(240,180,41,.35); z-index:2; }
+  .rutas { font:500 17px/1.4 var(--mono); }
+  .rutas .ruta { padding:8px 12px; border-bottom:1px solid rgba(38,48,88,.55); color:#c9d4ff; }
+  .rutas .ruta b { color:var(--texto); }
+  .rutas .ruta .f { color:var(--ambar); padding:0 4px; }
+  .rutas .ruta .lb { color:var(--apagado); font-size:14px; }
+  /* flechas de navegación visibles */
+  .reveal .controls { color:var(--ambar); }
+  .reveal .controls button { transform:scale(1.6); }
+  /* temporizador HUD */
+  #timer-hud { position:fixed; left:22px; bottom:18px; z-index:60; display:flex; gap:12px; align-items:baseline;
+    font:600 17px var(--mono); color:var(--texto); background:rgba(5,7,15,.78); border:1px solid var(--borde);
+    border-radius:10px; padding:9px 14px; user-select:none; }
+  #timer-hud .lb { color:var(--apagado); font-size:12px; letter-spacing:.14em; }
+  #timer-hud #tm-clock { min-width:64px; color:var(--ambar); }
+  #timer-hud.over #tm-clock { color:#f87171; }
+  #timer-hud button { all:unset; cursor:pointer; color:var(--apagado); font:600 14px var(--mono); padding:0 3px; }
+  #timer-hud button:hover { color:var(--texto); }
+  #timer-hud.hidden { display:none; }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- 1 · PORTADA -->
+<section data-num="01">
+  <img src="assets/img/intro.jpeg" alt="Software factories con IA" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
+  <aside class="notes">⏱ 0–1.5'. Bienvenida: «hoy, la historia completa: la IA, cómo se fabrica software, y la fábrica que lo promete todo». El motivo visual es la cinta de montaje: cada etapa, una estación.</aside>
+</section>
+
+<!-- 2 · GANCHO -->
+<section data-num="02">
+  <div class="badge">GANCHO</div>
+  <div style="height:100%; display:flex; flex-direction:column; justify-content:center;">
+    <h2 style="font-size:58px; font-weight:800; line-height:1.15;">Un individuo puede automatizar y replicar <span class="ambar">una empresa entera</span></h2>
+    <p class="apagado" style="font-size:24px; margin-top:20px;">La IA puede cubrir <b style="color:var(--texto);">todos los puestos del ciclo SDLC</b>:</p>
+    <div class="fila" style="margin-top:16px; gap:12px;">
+      <div class="estacion" style="padding:14px 6px;"><div class="nombre" style="font-size:20px;">Visión</div></div>
+      <div class="estacion" style="padding:14px 6px;"><div class="nombre" style="font-size:20px;">Producto</div></div>
+      <div class="estacion" style="padding:14px 6px;"><div class="nombre" style="font-size:20px;">Diseño</div></div>
+      <div class="estacion" style="padding:14px 6px;"><div class="nombre" style="font-size:20px;">Código</div></div>
+      <div class="estacion" style="padding:14px 6px;"><div class="nombre" style="font-size:20px;">Pruebas</div></div>
+      <div class="estacion" style="padding:14px 6px;"><div class="nombre" style="font-size:20px;">Despliegue</div></div>
+    </div>
+    <div class="fila" style="margin-top:34px; gap:26px;">
+      <div class="estacion" style="text-align:left; padding:24px 28px; border-color:var(--ambar);">
+        <div style="font:700 15px var(--mono); letter-spacing:.2em; color:var(--ambar);">💡 CON SUPERVISIÓN</div>
+        <div class="nombre" style="font-size:32px; margin-top:8px;">Light factory</div>
+        <div class="que" style="font-size:19px; margin-top:8px;">La IA trabaja cada puesto; la persona revisa, decide y aprueba.<br><span class="apagado">Humano <b>en</b> el bucle.</span></div>
+      </div>
+      <div class="estacion" style="text-align:left; padding:24px 28px; border-color:#f87171;">
+        <div style="font:700 15px var(--mono); letter-spacing:.2em; color:#f87171;">🌑 SIN SUPERVISIÓN</div>
+        <div class="nombre" style="font-size:32px; margin-top:8px;">Dark factory</div>
+        <div class="que" style="font-size:19px; margin-top:8px;">Los agentes escriben, validan y fusionan solos. Nadie mira.<br><span class="apagado">Humano <b>fuera</b> del bucle.</span></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">⏱ 1.5–2.5'. La frase, pausa. Luego la promesa: todos los puestos del ciclo los cubre la IA. Y el matiz que estructura el final de la charla: con supervisión = LIGHT factory; sin supervisión = DARK factory. «Hoy veremos las dos — y por qué una de ellas se rompe».</aside>
+</section>
+
+<!-- 3 · MAPA -->
+<section data-num="03">
+  <div class="badge">LA LÍNEA DE HOY</div>
+  <h2 style="font-size:46px; font-weight:800; margin-top:40px;">La línea de montaje de hoy</h2>
+  <div class="fila" style="margin-top:60px;">
+    <div class="estacion"><div class="num">ESTACIÓN 1</div><div class="nombre">Cronología</div><div class="que">la IA paso a paso, con fechas</div></div>
+    <div class="estacion"><div class="num">ESTACIÓN 2</div><div class="nombre">El SDLC</div><div class="que">cómo se fabrica software</div></div>
+    <div class="estacion"><div class="num">ESTACIÓN 3</div><div class="nombre">La IA en el ciclo</div><div class="que">luces apagadas vs encendidas</div></div>
+    <div class="estacion"><div class="num">ESTACIÓN 4</div><div class="nombre">Kahoot</div><div class="que">el test de la fábrica</div></div>
+  </div>
+  <div class="cinta" style="margin-top:70px;"></div>
+  <aside class="notes">⏱ 2.5–4'. Recorre las 4 estaciones con la mano. Promesa: «al final sabréis qué es una software factory, de dónde sale y por qué la más de moda… también se rompe».</aside>
+</section>
+
+<!-- 4 · ROADMAP -->
+<section data-num="04">
+  <div class="badge">ESTACIÓN 1</div>
+  <h2 style="font-size:46px; font-weight:800; margin-top:30px;">La cronología de un vistazo</h2>
+  <img class="fondo-img" src="assets/img/roadmap-slide.png" alt="Roadmap 1969–hoy">
+  <aside class="notes">⏱ 4–6'. Dos líneas de la cinta. LÍNEA A (orígenes): el TÉRMINO «software factory» lo acuñó la OTAN en 1968 (conferencia de Garmisch — Bob Bemer); en 1969 Hitachi (Japón) implanta la PRIMERA fábrica real de software (canonizada por Cusumano 1989); 2021 la IA PROGRAMA en tu editor (Copilot — tras Tabnine 2018 y GPT-3 2020); 2022 MAINSTREAM (ChatGPT); 2023 MULTI-AGENTES: MetaGPT simula una empresa (PM, arquitecto, QA). LÍNEA B (el presente): 2024 AGENT LOOPS — Devin y MCP: el agente itera (planifica·ejecuta·observa); 2025 CLI HARNESS — Claude Code y opencode, workflows research→plan→implement; los hechos de 2025: vibe coding (feb), Ralph loop (jul, el loop al extremo), SDD (sep); y 2026: SOFTWARE FACTORIES = loops en TODAS las estaciones del ciclo. REMARCAR: «una factory no es un bucle más grande — es un bucle en cada puesto. Eso la hace poderosa… y frágil».</aside>
+</section>
+
+<!-- 5 · ANEXO · RALPH LOOP -->
+<section data-num="05">
+  <div class="badge">ANEXO 1 · CRONOLOGÍA</div>
+  <h2 style="font-size:44px; font-weight:800; margin-top:16px;">The Ralph loop <span class="apagado" style="font-size:24px; font-weight:600;">· jul 2025 · Geoffrey Huntley</span></h2>
+  <pre class="loopcode" style="margin-top:12px; font-size:24px; line-height:1.8;"><span class="cm"># each pass: fresh session + PRD.md + progress.txt</span>
+<span class="kw">while true; do</span>
+    <span class="fn">opencode</span> <span class="bl">run -m</span> <span class="bl">opus-4-5</span> <span class="st">"$PROMPT"</span>
+<span class="kw">done</span></pre>
+  <p class="apagado" style="font:500 14px var(--mono); margin-top:6px;">ralph.sh — ghuntley.com/ralph · «full hands-off vibe coding» · «it requires faith — and a belief in eventual consistency»</p>
+  <div class="fila" style="margin-top:14px; gap:20px; align-items:stretch;">
+    <div class="estacion" style="flex:1; text-align:left; padding:14px 20px;">
+      <div style="font:700 14px var(--mono); letter-spacing:.2em; color:var(--ambar);">🧠 FRESH MEMORY EACH PASS</div>
+      <p style="font-size:17px; margin-top:8px; line-height:1.4;">Every iteration starts a <b>brand-new session</b> — no <i>context rot</i>, no forgetting, no drift.</p>
+    </div>
+    <div class="estacion" style="flex:1.15; text-align:left; padding:14px 20px;">
+      <div style="font:700 14px var(--mono); letter-spacing:.2em; color:var(--ambar);">📓 PRD + PROGRESS.TXT</div>
+      <p style="font-size:17px; margin-top:8px; line-height:1.4;">Reads the <b>requirements</b> and the <b>log</b> of the previous attempt: what was tried, what worked, what failed.</p>
+    </div>
+    <div class="estacion" style="flex:1.15; text-align:left; padding:14px 20px;">
+      <div style="font:700 14px var(--mono); letter-spacing:.2em; color:var(--ambar);">🔁 LIVE · CODE · DIE · REPEAT</div>
+      <p style="font-size:17px; margin-top:8px; line-height:1.4;">Takes the top task, codes it, runs the <b>tests</b>, logs progress. Session dies? The next one picks up <b>from the notes</b>.</p>
+    </div>
+    <div style="width:190px;">
+      <img src="assets/img/ralph-crop.jpg" alt="Ralph Wiggum" style="width:100%; height:172px; object-fit:cover; object-position:top; border-radius:14px; border:1px solid var(--borde);">
+      <p class="apagado" style="font-size:12px; margin-top:5px; text-align:center;">Ralph Wiggum — the namesake</p>
+    </div>
+  </div>
+  <p style="font-size:18px; margin-top:14px; text-align:center;"><b class="ambar">Why it went viral:</b> friendly brute force — it grinds alone overnight. <b>Stubborn as Ralph:</b> hits the same wall (the tests) until it falls.</p>
+  <aside class="notes">⏱ 8.5–10'. ANEXO de la cronología, en inglés (guiño al meme). Cómo funciona, en 4 pasos: ① memoria limpia — cada vuelta arranca una sesión NUEVA del agente (adiós context rot, olvido y alucinación por desgaste); ② PRD + progress.txt — lee los requisitos y el diario del intento anterior (qué se intentó, qué funcionó, qué falló); ③ persistencia terca «Live, code, die, repeat» — toma la tarea más importante, codea, corre los tests y anota el avance; si la sesión muere, la siguiente sigue desde las notas actualizadas; ④ script sencillo — un bucle bash que repite la llamada hasta que los tests externos validan. Por qué se hizo viral: fuerza bruta con IA (trabaja solo horas/noches, mínima supervisión), evita el cansancio del modelo, y la filosofía Ralph Wiggum — no es un genio, es un trabajador incansable que golpea la misma pared (los tests) hasta derribarla. EL REMARQUE: «a partir de Ralph, la gente buscó agentes que corran solos — el loop auto se volvió mainstream. De aquí a las factories hay un paso». Matiz honesto: Devin (2024) ya era autónomo; Ralph lo hizo accesible a cualquiera. Citas: «full hands-off vibe coding» y «faith + eventual consistency».</aside>
+</section>
+
+<!-- 6 · ANEXO 2 · DEL LOOP A LA FACTORY -->
+<section data-num="06">
+  <div class="badge">ANEXO 2 · CRONOLOGÍA</div>
+  <h2 style="font-size:40px; font-weight:800; margin-top:30px;">Una factory nace del loop: <span class="ambar">envolverlo y multiplicarlo</span></h2>
+  <img src="assets/img/addy-loop-harness-factory.svg" alt="The loop → the harness → the factory: un agente (context, act, verify), envuelto en un harness (sandbox, tools, gates) y ejecutado muchas veces, drenando por un único gate"
+       style="width:1060px; max-width:100%; display:block; margin:20px auto 0; border-radius:14px; border:1px solid var(--borde);">
+  <p style="font-size:20px; margin-top:16px; text-align:center;"><b class="ambar">1 loop</b> (context · act · verify) <span class="ambar">→ wrap it:</span> harness con gates <span class="ambar">→ run many:</span> todo drena por una puerta — review/merge → prod</p>
+  <p class="apagado" style="font-size:14px; margin-top:6px; text-align:center;">diagrama: Addy Osmani — «Software Factories, Light and Dark»</p>
+  <aside class="notes">⏱ ~1' · ANEXO opcional (se puede rodar si el tiempo aprieta). Ralph es el LOOP de la izquierda: un agente que junta contexto, actúa, verifica y repite — el while true. Primera mejora, «wrap it»: envolver el loop en un HARNESS — sandbox, tools, memoria y, sobre todo, gates: qué significa «done» (es el CLI harness de 2025 de la cronología). Segunda mejora, «run many»: lanzar muchos harness en paralelo y drenarlos todos por UNA compuerta — review/merge → prod. Eso es una software factory: no un bucle más grande, sino muchos bucles con paredes y una sola puerta. Conecta con la frase del roadmap («una factory = un bucle en cada puesto») y anticipa el dibujo de la estación 2. Diagrama de Addy Osmani, «Software Factories, Light and Dark» (fuente 07).</aside>
+</section>
+
+<!-- 7 · VÍDEO · EL SDLC -->
+<section data-num="07">
+  <div class="badge">ESTACIÓN 2 · EL SDLC</div>
+  <video src="assets/video/sdlc.mp4" controls playsinline preload="metadata"
+         style="position:absolute; top:110px; left:60px; width:1160px; height:560px; object-fit:contain; background:#05070f; border-radius:14px; border:1px solid var(--borde);"></video>
+  <aside class="notes">⏱ 10–12'. Dale al play: el ciclo de vida del software, de la idea a producción y vuelta. No hay que explicar nada antes — el vídeo pone a todos en el mismo mapa. Al terminar, conecta: «ese ciclo ES la línea de montaje — ahora lo vemos dibujado por Dex Horthy, estación por estación».</aside>
+</section>
+
+<!-- 8 · ANEXO · MICROSERVICIOS -->
+<section data-num="08">
+  <div class="badge">ESTACIÓN 2 · ANEXO</div>
+  <img src="assets/img/monolito-vs-micro.png" alt="Monolito vs microservicios" style="position:absolute; top:120px; left:50%; transform:translateX(-50%);
+         width:920px; height:560px; object-fit:contain; background:#0e1e3c;
+         border-radius:16px; border:1px solid var(--borde); box-shadow:0 14px 40px rgba(0,0,0,.45);">
+  <aside class="notes">⏱ 12–15'. ANEXO: microservicios con esta infografía. Izquierda: el monolito (todo en uno: UI, lógica, datos, pagos, notificaciones) — ventajas: simple al inicio, fácil de desplegar; inconveniente: difícil de ESCALAR. Derecha: microservicios (dividir para vencer) — cada servicio con su ciclo y su BD, hablan por APIs; escalan independientes, fallas aisladas… PERO: REMARCA el coste — ① escalar requiere DevOps mucho más difíciles (CI/CD por servicio, monitorización, orquestación — Swarm/Kubernetes del nivel 3), ② gestión compleja de infraestructura = COSTE, ③ probar y monitorear es más difícil. Conclusión de la imagen: «no es que uno sea mejor: se cambia simplicidad inicial por escalabilidad y resiliencia a largo plazo». Y el puente: «¿quién opera todas esas cintas? — la IA. Vamos al siguiente nivel».</aside>
+</section>
+
+<!-- 9 · LA FOTO COMPLETA -->
+<section data-num="09">
+  <div class="badge">ESTACIÓN 2 · EL SDLC — FOTO COMPLETA</div>
+  <h2 style="font-size:40px; font-weight:800; margin-top:14px;">La foto completa</h2>
+  <img src="assets/img/aran-dex-software-factory-2022.jpg" alt="A Software Factory Circa 2022" style="height:545px; width:auto; max-width:100%; display:block; margin:12px auto 0; border-radius:12px; border:1px solid var(--borde);">
+  <p style="font-size:22px; margin-top:10px;"><b class="ambar">12 transiciones</b> · <b class="ambar">3 bucles</b> · <b class="apagado">2 tiempos: build y review, horas o días</b> — así se fabricaba software en 2022.</p>
+  <aside class="notes">⏱ 15–17'. Recap del dibujo de Dex tras el anexo. Recorre el dibujo EN VIVO con la mano: usuarios → visión → PMs → engineers → build → PR (con las puertas humanas) → prod → monitoring → incidents → vuelta. Los 3 bucles y los tiempos: build y review, horas o días. Frase de cierre: «memorizad el DIBUJO, no las herramientas: las herramientas cambian — el ciclo no». Transición: «¿y si en vez de una cinta… hay varias?».</aside>
+</section>
+
+<!-- ESTACIÓN 3 · LA IA EN EL CICLO — extracto «the lights-off software factory» (Dex Horthy, wsff.md) -->
+
+<!-- 10 · E3 · LA FÁBRICA AGÉNTICA -->
+<section data-num="10">
+  <div class="badge">ESTACIÓN 3 · LA IA EN EL CICLO</div>
+  <h2 style="font-size:36px; font-weight:800; margin-top:12px;">La fábrica agéntica: <span class="ambar">cambia una sola pieza</span></h2>
+  <p style="font:600 20px var(--mono); margin-top:8px; text-align:center;">«someone builds the thing» <span class="ambar">→</span> «<b>an agent</b> builds the thing»</p>
+  <img src="assets/img/dex-agentic-factory-base.jpg" alt="The agentic software factory — el agente construye la cosa" style="height:430px; width:auto; max-width:100%; display:block; margin:12px auto 0; border-radius:12px; border:1px solid var(--borde);">
+  <p style="font-size:19px; margin-top:8px; text-align:center;"><b class="ambar">el nuevo motor:</b> orchestration · harness · sandbox · model <b class="apagado">— el resto de la cinta no cambia</b></p>
+  <aside class="notes">⏱ 17–18.5'. Volvemos al dibujo de la estación anterior, actualizado: cambia UNA pieza — donde ponía «someone builds the thing» ahora pone «an agent builds the thing». Debajo, el motor que lo hace posible, sin entrar a fondo (broma de Dex: «no me detengo: estoy harto de leer sobre esto, y seguro que vosotros también»): orchestration (reparte el trabajo entre agentes) · harness (el andamiaje CLI de la cronología) · sandbox (entorno aislado donde el agente puede romper cosas sin romper nada real) · model (el LLM) · computer use (agentes que manejan navegador y teclado). Fijarse en el dibujo: el resto NO cambia — siguen las casillas verdes punteadas: human tests the change, human reviews the change.</aside>
+</section>
+
+<!-- 11 · E3 · EL CUELLO DE BOTELLA SE MUEVE -->
+<section data-num="11">
+  <div class="badge">ESTACIÓN 3 · LA IA EN EL CICLO</div>
+  <h2 style="font-size:36px; font-weight:800; margin-top:12px;">Cuando el agente construye, <span class="ambar">el cuello de botella se mueve</span></h2>
+  <img src="assets/img/dex-agentic-factory-bottleneck.jpg" alt="Construir baja a minutos u horas; revisar sigue en horas o días" style="height:480px; width:auto; max-width:100%; display:block; margin:12px auto 0; border-radius:12px; border:1px solid var(--borde);">
+  <p style="font-size:19px; margin-top:8px; text-align:center;">construir: de horas/días a <b class="ambar">minutos/horas</b> · review: <b style="color:#f87171">sigue horas/días</b> → <b class="ambar">review is the bottleneck</b></p>
+  <aside class="notes">⏱ 18.5–20'. Dos mediciones del dibujo. Lado izquierdo: building — construir — cae de horas o días a minutos u horas. Lado derecho: review — la revisión del código — sigue costando horas o días, porque un humano tiene que leer el código y probar el cambio. Conclusión de Dex: «review is the bottleneck» — el cuello de botella ya no es construir: es revisar. Frase para rematar: «la fábrica ya no espera al que escribe; espera al que lee».</aside>
+</section>
+
+<!-- 12 · E3 · ACELERAR EL REVIEW -->
+<section data-num="12">
+  <div class="badge">ESTACIÓN 3 · LA IA EN EL CICLO</div>
+  <h2 style="font-size:36px; font-weight:800; margin-top:12px;">Acelerar el review: <span class="ambar">agentes que revisan agentes</span></h2>
+  <img src="assets/img/dex-agentic-factory-review.jpg" alt="Se añaden agentic code review y agentic regression testing" style="height:480px; width:auto; max-width:100%; display:block; margin:12px auto 0; border-radius:12px; border:1px solid var(--borde);">
+  <p style="font-size:19px; margin-top:8px; text-align:center;"><b class="ambar">agentic code review</b> (estilo, bugs, seguridad) · <b class="ambar">agentic regression testing</b> <b class="apagado">— más rápido, pero sigue siendo el cuello de botella</b></p>
+  <aside class="notes">⏱ 20–21.5'. Así que se acelera el review también, con agentes — dos estaciones nuevas en el dibujo: ① agentic code review: revisión automática de estilo, bugs y seguridad; ② agentic regression testing: tests de regresión — el agente sondea la app desde fuera con navegadores y computer use… «y quizá te manda un vídeo mono cuando termina». Resultado (en rojo en el dibujo): faster, but still the bottleneck — más rápido, pero al final sigue habiendo un humano leyendo.</aside>
+</section>
+
+<!-- 13 · E3 · RUTA ①: INCIDENTES -->
+<section data-num="13">
+  <div class="badge">ESTACIÓN 3 · LA IA EN EL CICLO</div>
+  <h2 style="font-size:36px; font-weight:800; margin-top:12px;">Ruta ①: los incidentes entran <span class="ambar">en la fábrica</span></h2>
+  <img src="assets/img/dex-agentic-factory-incidents.jpg" alt="Rute incidents into the factory — flecha de monitoring a stuff to do" style="height:480px; width:auto; max-width:100%; display:block; margin:12px auto 0; border-radius:12px; border:1px solid var(--borde);">
+  <p style="font-size:19px; margin-top:8px; text-align:center;">monitoring detecta → <b class="ambar">incident → stuff to do</b> → un PR que «quizá ya lo arregla» <b class="apagado">— nadie madruga a las 3 am</b></p>
+  <aside class="notes">⏱ 21.5–22.5'. Podemos hacer más bucles: enrutar (route) el incident — la incidencia de producción — hacia dentro de la fábrica (flecha morada). Antes: suena la alerta y llaman a alguien a las 3 de la madrugada. Ahora: el incident entra en la cola (stuff to do) y la persona se despierta con un pull request «que quizá ya lo arregla». REMARCAR el «quizá»: lo arregla o no, lo decide la revisión humana.</aside>
+</section>
+
+<!-- 14 · E3 · RUTA ②: FEEDBACK -->
+<section data-num="14">
+  <div class="badge">ESTACIÓN 3 · LA IA EN EL CICLO</div>
+  <h2 style="font-size:36px; font-weight:800; margin-top:12px;">Ruta ②: el feedback del usuario, <span class="ambar">directo a la cola</span></h2>
+  <img src="assets/img/dex-agentic-factory-feedback.jpg" alt="Route user feedback into the factory — flecha de complaints a stuff to do" style="height:480px; width:auto; max-width:100%; display:block; margin:12px auto 0; border-radius:12px; border:1px solid var(--borde);">
+  <p style="font-size:19px; margin-top:8px; text-align:center;"><b class="ambar">complaints · feature requests</b> → stuff to do <b class="apagado">— la gente pide cosas, y se construyen</b></p>
+  <aside class="notes">⏱ 22.5–23.5'. Segunda ruta: el feedback — la retroalimentación de los usuarios — entra directo en la fábrica (flecha naranja; se salta a las personas del medio). complaints y feature requests — quejas y peticiones — van a stuff to do. Frase del extracto: «la gente pide cosas, y se construyen». Los puestos de producto dejan de ser el filtro: pasan a alimentar la cinta.</aside>
+</section>
+
+<!-- 15 · E3 · DOS PREGUNTAS -->
+<section data-num="15">
+  <div class="badge">ESTACIÓN 3 · LA IA EN EL CICLO</div>
+  <h2 style="font-size:36px; font-weight:800; margin-top:12px;">El trabajo se convierte en <span class="ambar">dos preguntas</span></h2>
+  <img src="assets/img/dex-agentic-factory-queue.jpg" alt="How much can you stuff into the queue — how fast can you review the changes" style="height:480px; width:auto; max-width:100%; display:block; margin:12px auto 0; border-radius:12px; border:1px solid var(--borde);">
+  <p style="font-size:19px; margin-top:8px; text-align:center;"><b class="ambar">① cuánto cabe en la queue (la cola)</b> · <b class="ambar">② qué rápido revisas y testeas lo que sale</b></p>
+  <aside class="notes">⏱ 23.5–24.5'. Con las dos rutas conectadas, el recuadro verde de la izquierda es la entrada (personas → cola) y el de la derecha la salida (revisión). El trabajo queda en dos preguntas: how much can you stuff into the queue — cuánto puedes meter en la cola — y how fast can you review and test what comes out — qué rápido revisas y testeas lo que sale. La fábrica agéntica en una frase: los humanos ya no construyen — alimentan la cola y revisan la salida.</aside>
+</section>
+
+<!-- 16 · E3 · LIGHTS-OFF -->
+<section data-num="16">
+  <div class="badge">ESTACIÓN 3 · LA IA EN EL CICLO</div>
+  <h2 style="font-size:36px; font-weight:800; margin-top:12px;">The <span style="color:#f87171">lights-off</span> software factory</h2>
+  <img src="assets/img/dex-lights-off-no-review.jpg" alt="Human tests y human reviews tachados — no thanks" style="height:480px; width:auto; max-width:100%; display:block; margin:12px auto 0; border-radius:12px; border:1px solid var(--borde);">
+  <p style="font-size:19px; margin-top:8px; text-align:center;"><b style="color:#f87171">«ya no leemos el código»</b> <b class="apagado">— término de Dan Shapiro · caso StrongDM (Simon Willison)</b></p>
+  <aside class="notes">⏱ 24.5–26.5'. EL giro de la charla. «The lights-off software factory» — la fábrica con las luces apagadas: término acuñado por Dan Shapiro, y Simon Willison escribió cómo lo implementa StrongDM. Se mira la preciosa fábrica, la estropea ese paso incómodo del review… y se decide: eso de que un humano lea cada cambio — «no, gracias» (el rojo del dibujo tachando human tests y human reviews). Ya no se lee el código. Conectar con la diapositiva 02: esto es la DARK factory hecha realidad. Hacer PAUSA antes de pasar — aquí empieza la advertencia.</aside>
+</section>
+
+<!-- 17 · E3 · INVERTIR + UNA PREGUNTA -->
+<section data-num="17">
+  <div class="badge">ESTACIÓN 3 · LA IA EN EL CICLO</div>
+  <h2 style="font-size:36px; font-weight:800; margin-top:12px;">Apagadas las luces, el trabajo es <span class="ambar">una sola pregunta</span></h2>
+  <img src="assets/img/dex-lights-off-invest.jpg" alt="Invest into these things — flechas verdes a testing, review, monitoring, rollout" style="height:480px; width:auto; max-width:100%; display:block; margin:12px auto 0; border-radius:12px; border:1px solid var(--borde);">
+  <p style="font-size:19px; margin-top:8px; text-align:center;">testing · sandboxes · review automática · monitoring · rollout · señales de feedback <b class="ambar">— ¿cuánto del océano queremos hervir?</b></p>
+  <aside class="notes">⏱ 26.5–28.5'. Sin revisión humana, el esfuerzo se reinvierte (flechas verdes) en: testing — y en que el agente testee su propio trabajo —, sandboxes y orchestration, review automática, monitoring (monitorización), rollout (despliegue gradual) y señales de feedback de los usuarios. Y el trabajo queda en UNA pregunta: ¿cuántas cosas le pedimos construir al agente? ¿Cuánto del océano queremos hervir — «boil the ocean»? Puente honesto a lo que sigue: «suena a paraíso… y de hecho Dex dedicó el resto del talk a por qué estas fábricas se rompen».</aside>
+</section>
+
+<!-- 18 · E3 · LOS DATOS (FAROS AI) -->
+<section data-num="18">
+  <div class="badge">ESTACIÓN 3 · LA IA EN EL CICLO</div>
+  <h2 style="font-size:40px; font-weight:800; margin-top:30px;">La fábrica acelera… <span style="color:#f87171">y la factura llega</span></h2>
+  <p class="apagado" style="font-size:19px; margin-top:10px;">Faros AI, «Acceleration Whiplash» (abr 2026) · 22.000 desarrolladores · 4.000 equipos · 2 años de datos</p>
+  <div class="fila" style="margin-top:34px; gap:26px;">
+    <div class="estacion" style="text-align:left; padding:26px 30px; border-color:var(--ambar); flex:1;">
+      <div style="font:700 15px var(--mono); letter-spacing:.2em; color:var(--ambar);">📈 LA PROMESA</div>
+      <div style="font-size:52px; font-weight:800; margin-top:16px;">+66%</div>
+      <div style="font-size:20px; margin-top:2px;">épicos completados por dev</div>
+      <div style="font-size:52px; font-weight:800; margin-top:18px;">+34%</div>
+      <div style="font-size:20px; margin-top:2px;">tareas terminadas</div>
+    </div>
+    <div class="estacion" style="text-align:left; padding:26px 30px; border-color:#f87171; flex:1.15;">
+      <div style="font:700 15px var(--mono); letter-spacing:.2em; color:#f87171;">🔥 LA FACTURA</div>
+      <div style="font-size:52px; font-weight:800; margin-top:16px;">×3,5</div>
+      <div style="font-size:20px; margin-top:2px;">incidentes por pull request <span class="apagado">(+242,7%)</span></div>
+      <div style="font-size:52px; font-weight:800; margin-top:18px;">+31%</div>
+      <div style="font-size:20px; margin-top:2px;">PRs fusionados sin revisar <span class="apagado">(+31,3%)</span></div>
+    </div>
+  </div>
+  <p style="font-size:22px; margin-top:32px; text-align:center;">Producimos más que nunca — <b style="color:#f87171">y revisamos menos que nunca</b> <span class="apagado">· el review, ahora 5× más lento</span></p>
+  <aside class="notes">⏱ 28.5–30'. Los datos: informe de Faros AI — 22.000 desarrolladores, 4.000 equipos, 2 años. La promesa: +66% de épicos por dev, +33,7% de tareas. La factura: +242,7% de incidentes por PR (casi ×3,5), +57,9% de incidentes mensuales, +54% de bugs por dev, +31,3% de PRs fusionados sin revisar y el tiempo mediano en revisión +441,5% — el review se ATASCA. Lectura: exactamente la diapositiva del cuello de botella — generamos más, revisamos peor; y al no dar abasto, código se fusiona sin nadie que lo mire (la puerta que la diapositiva 15 tachó). Ejemplo real para contar: las caídas de Amazon vinculadas a su herramienta Kiro (Financial Times) y su «90-day reset»; Matt Pocock: «las codebases se rompen más rápido que nunca».</aside>
+</section>
+
+<!-- 19 · E3 · LA CAUSA -->
+<section data-num="19">
+  <div class="badge">ESTACIÓN 3 · LA IA EN EL CICLO</div>
+  <h2 style="font-size:40px; font-weight:800; margin-top:30px;">¿Por qué se rompen? <span class="ambar">La recompensa solo ve el test</span></h2>
+  <div class="fila" style="margin-top:44px; gap:26px;">
+    <div class="estacion" style="text-align:left; padding:30px 34px; border-color:var(--ambar); flex:1;">
+      <div style="font:700 15px var(--mono); letter-spacing:.2em; color:var(--ambar);">✅ LO QUE LA RECOMPENSA SÍ VE</div>
+      <div style="font-size:30px; font-weight:800; margin-top:14px;">El test se pasa en segundos</div>
+      <p style="font-size:21px; line-height:1.45; margin-top:12px;">Es lo único que premia el entrenamiento: <b>el agente practica para el examen</b>… y lo saca.</p>
+    </div>
+    <div class="estacion" style="text-align:left; padding:30px 34px; border-color:#f87171; flex:1;">
+      <div style="font:700 15px var(--mono); letter-spacing:.2em; color:#f87171;">🕳 LO QUE NO VE</div>
+      <div style="font-size:30px; font-weight:800; margin-top:14px;">La arquitectura se cobra en meses</div>
+      <p style="font-size:21px; line-height:1.45; margin-top:12px;">El coste del mal diseño llega tarde — <b>demasiado tarde para corregir al modelo</b>.</p>
+    </div>
+  </div>
+  <p style="font-size:25px; margin-top:44px; text-align:center; line-height:1.4;">«Ni más harness ni más loops lo arreglan — <b class="ambar">es un problema de cómo se entrenan</b>»</p>
+  <p class="apagado" style="font-size:17px; margin-top:10px; text-align:center;">la tesis de la charla · «no amount of harness engineering or loops maxing can solve what is fundamentally a model training issue»</p>
+  <aside class="notes">⏱ 30–31.5'. LA CAUSA — la tesis entera en dos paneles. Los modelos de código se entrenan con RL donde la recompensa es binaria y corta: ¿pasan los tests ocultos en ~15 min? Sí o no. La mantenibilidad no entra ahí. Cita de Dex: «los tests dan feedback en segundos; el coste de la mala arquitectura se mide en semanas, meses, años» — la señal llega demasiado tarde para que el modelo aprenda de ella. Y no existe verificador barato para «¿este codebase seguirá siendo trabajable el próximo trimestre?». Consecuencia (conecta con la diapositiva 11): el agente revisor tiene el MISMO punto ciego que el autor — el generator no puede ser el judge. Si hay tiempo, modos de fallo: try/catch defensivos donde nada debería lanzar, casts que silencian errores de tipos, abstracciones duplicadas junto a las existentes. Anécdota propia de HumanLayer (jul 2025): meses de slop acumulado, un issue que ningún prompt resolvió, 3 meses reconstruyendo comprensión de código que nadie leyó.</aside>
+</section>
+
+<!-- 20 · E3 · LAS 4 FASES -->
+<section data-num="20">
+  <div class="badge">ESTACIÓN 3 · LA IA EN EL CICLO</div>
+  <h2 style="font-size:40px; font-weight:800; margin-top:30px;">Encender las luces: <span class="ambar">decidir antes de construir</span></h2>
+  <p class="apagado" style="font-size:19px; margin-top:10px;">Las 4 fases de Dex para salir del dark factory — la IA ayuda a redactarlas, <b style="color:var(--texto)">el humano las aprueba</b></p>
+  <div class="cinta" style="margin-top:36px;"></div>
+  <div class="fila" style="margin-top:36px; gap:16px;">
+    <div class="estacion" style="padding:22px 12px;"><div class="num">FASE 1</div><div class="nombre" style="font-size:23px;">Product requirements</div><div class="que">¿qué problema, para quién, cómo se mide el éxito?</div></div>
+    <div class="estacion" style="padding:22px 12px;"><div class="num">FASE 2</div><div class="nombre" style="font-size:23px;">System architecture</div><div class="que">servicios, contratos y restricciones — antes del código</div></div>
+    <div class="estacion" style="padding:22px 12px;"><div class="num">FASE 3</div><div class="nombre" style="font-size:23px;">Program design</div><div class="que">tipos, firmas, call graphs — «la más infravalorada»</div></div>
+    <div class="estacion" style="padding:22px 12px;"><div class="num">FASE 4</div><div class="nombre" style="font-size:23px;">Vertical slices</div><div class="que">trozos end-to-end, de la idea a producción</div></div>
+  </div>
+  <p style="font-size:23px; margin-top:38px; text-align:center;">«30 minutos de alineación antes <b class="ambar">= horas menos de review después</b>»</p>
+  <p style="font:700 30px var(--mono); color:#f87171; margin-top:22px; text-align:center;">Read the dang code.</p>
+  <aside class="notes">⏱ 31.5–33.5'. La prescripción de Dex (parte 2, «Turning the lights back on»): encender de nuevo la luz de las decisiones, ANTES del código. Cuatro artefactos escritos — la IA asiste a redactarlos, el humano los aprueba: ① product requirements (problema, audiencia, criterios de éxito); ② system architecture (servicios, contratos, restricciones); ③ program design — la más infravalorada: tipos, firmas, call graphs (caso Dylan Mulroy/Cloudflare); ④ vertical slices (orden end-to-end, coordinación entre repos). La cuenta que lo resume: «~30 minutos de pre-planning te ahorran horas de review». Y: «a plan that only one tool can see is not a plan, it is a preference». Matices honestos: no es anti-vibe-coding (proyecto personal ≠ sistema empresarial de 10 años); los cambios pequeños siguen directos al agente — estos artefactos son para «el trabajo caro de equivocarse»; en codebases brownfield los agentes degradan tras 3–6 meses. Si preguntan por un caso donde SÍ funciona: Alera (Recursive AI) — atención humana de 34h a 3h por run porque su verificador es externo y barato. CIERRE de la estación con «Read the dang code.» — pausa. Puente: «¿apagaríais las luces en vuestra fábrica? Vamos a ponerlo a prueba — Kahoot».</aside>
+</section>
+
+<!-- 21 · CIERRE · RECAP -->
+<section data-num="21">
+  <div class="badge">CIERRE</div>
+  <h2 style="font-size:44px; font-weight:800; margin-top:36px;">Lo que nos llevamos</h2>
+  <p class="apagado" style="font-size:21px; margin-top:10px;">cronología · SDLC · la IA en el ciclo — y el criterio humano que lo sostiene todo</p>
+  <div class="fila" style="margin-top:40px; gap:18px;">
+    <div class="estacion" style="padding:24px 14px;"><div class="num">1969 → HOY</div><div class="nombre" style="font-size:24px;">La fábrica es vieja</div><div class="que">lo nuevo: la IA cubre <b>todos</b> los puestos del ciclo</div></div>
+    <div class="estacion" style="padding:24px 14px;"><div class="num">EL SDLC</div><div class="nombre" style="font-size:24px;">Una cinta con bucles</div><div class="que">12 transiciones · 3 bucles · build y review, horas o días</div></div>
+    <div class="estacion" style="padding:24px 14px;"><div class="num">LA FACTORY</div><div class="nombre" style="font-size:24px;">Loop × harness × many</div><div class="que">muchos bucles con paredes — una sola puerta: review/merge</div></div>
+    <div class="estacion" style="padding:24px 14px;"><div class="num">LAS LUCES</div><div class="nombre" style="font-size:24px;">Light vs dark</div><div class="que">con criterio humano funciona — sin él, ×3,5 incidentes</div></div>
+  </div>
+  <div class="cinta" style="margin-top:48px;"></div>
+  <p style="font:700 32px var(--mono); color:#f87171; margin-top:34px; text-align:center;">Read the dang code.</p>
+  <aside class="notes">⏱ 41.5–42.5'. Tras el Kahoot, recoger el hilo en 4 golpes: ① la primera fábrica de software se implanta en 1969 (Hitachi, Japón — el término lo acuñó la OTAN en 1968); lo nuevo no es la fábrica, es que la IA ocupe TODOS los puestos; ② el SDLC es una cinta con bucles: 12 transiciones, 3 bucles, y dos relojes — build y review; ③ una factory es el loop de Ralph envuelto en harness (sandbox, tools, gates) y multiplicado — todo drena por una puerta; ④ las luces: light factory = humano en el bucle (funciona); dark = ×3,5 incidentes, slop, codebases que se rompen. Y el cierre de Dex: READ THE DANG CODE. Puerta a la diapositiva de fuentes: «todo esto está documentado — fotografiad».</aside>
+</section>
+
+<!-- 22 · ANEXO 3 · ECOSISTEMA OPEN SOURCE -->
+<section data-num="22">
+  <div class="badge">ANEXO 3 · ECOSISTEMA OPEN SOURCE</div>
+  <h2 style="font-size:38px; font-weight:800; margin-top:18px;">La factory open source <span class="ambar">ya existe:</span> elige tu loop</h2>
+  <div class="fila" style="margin-top:14px; gap:18px; align-items:stretch;">
+    <div class="estacion" style="text-align:left; padding:16px 22px; border-color:var(--ambar); flex:1;">
+      <div style="font:700 13px var(--mono); letter-spacing:.18em; color:var(--ambar);">🏭 FACTORY EN UNA LIBRERÍA</div>
+      <p style="font-size:21px; font-weight:800; margin-top:10px;">Sandcastle <span class="apagado" style="font-size:15px; font-weight:600;">· Matt Pocock</span></p>
+      <p style="font-size:18px; line-height:1.35; margin-top:6px;">Agentes de código en sandboxes: <span style="font:600 16px var(--mono); color:#c9d4ff;">run()</span></p>
+      <p style="font:600 16px var(--mono); margin-top:10px; color:#c9d4ff;">mattpocock/sandcastle</p>
+      <p class="apagado" style="font-size:14px; margin-top:5px;">8,7k★ · MIT · Docker/Podman/Vercel · worktrees · gates</p>
+    </div>
+    <div class="estacion" style="text-align:left; padding:16px 22px; flex:1;">
+      <div style="font:700 13px var(--mono); letter-spacing:.18em; color:var(--ambar);">🤖 PLATAFORMAS AGÉNTICAS</div>
+      <p style="font-size:16px; line-height:1.3; margin-top:9px;"><b>OpenHands</b> <span class="apagado" style="font-size:14px;">(ex-OpenDevin)</span><br><span style="font:600 12.5px var(--mono); color:#c9d4ff;">OpenHands/OpenHands · 92k★</span></p>
+      <p style="font-size:16px; line-height:1.3; margin-top:7px;"><b>Cline</b> — agente como SDK<br><span style="font:600 12.5px var(--mono); color:#c9d4ff;">cline/cline · 71k★</span></p>
+      <p style="font-size:16px; line-height:1.3; margin-top:7px;"><b>Aider</b> — pair programming<br><span style="font:600 12.5px var(--mono); color:#c9d4ff;">Aider-AI/aider · 50k★</span></p>
+      <p style="font-size:16px; line-height:1.3; margin-top:7px;"><b>SWE-agent</b> — issue → PR<br><span style="font:600 12.5px var(--mono); color:#c9d4ff;">SWE-agent/SWE-agent · 20,6k★</span></p>
+    </div>
+    <div class="estacion" style="text-align:left; padding:16px 22px; flex:1;">
+      <div style="font:700 13px var(--mono); letter-spacing:.18em; color:var(--ambar);">🏢 LA «EMPRESA DE IA»</div>
+      <p style="font-size:16px; line-height:1.3; margin-top:9px;"><b>AutoGPT</b> · el germen del movimiento<br><span style="font:600 12.5px var(--mono); color:#c9d4ff;">Significant-Gravitas/AutoGPT · 188k★</span></p>
+      <p style="font-size:16px; line-height:1.3; margin-top:7px;"><b>MetaGPT</b> · roles: PM → arquitecto → ing.<br><span style="font:600 12.5px var(--mono); color:#c9d4ff;">FoundationAgents/MetaGPT · 71k★</span></p>
+      <p style="font-size:16px; line-height:1.3; margin-top:7px;"><b>Symphony</b> (OpenAI) · issues → agentes<br><span style="font:600 12.5px var(--mono); color:#c9d4ff;">openai/symphony</span></p>
+      <p style="font-size:16px; line-height:1.3; margin-top:7px;"><b>claude-squad</b> · varios agentes, un terminal<br><span style="font:600 12.5px var(--mono); color:#c9d4ff;">smtg-ai/claude-squad · 8,7k★</span></p>
+    </div>
+  </div>
+  <p class="apagado" style="font-size:14px; margin-top:14px; text-align:center;">~100 proyectos catalogados · <b style="color:var(--texto);">estrellas a oct 2026</b> · lista completa en <span style="font:600 13px var(--mono); color:#c9d4ff;">github.com/varun1505/awesome-software-factories</span></p>
+  <aside class="notes">⏱ ~1' · ANEXO 3 opcional (se puede rodar si el tiempo aprieta — como el anexo 2). El mensaje: después de la charla no hay que construir la fábrica desde cero — el ecosistema open source ya tiene todas las piezas. Sandcastle (Matt Pocock) es lo más directo al guion de la estación 3: una librería que envuelve el loop en un harness (sandbox, worktrees, señal de done, gates de review) y lo multiplica — mattpocock/sandcastle, 8,7k estrellas, MIT. Plataformas agénticas completas: OpenHands (la más popular), Cline (SDK), Aider, SWE-agent (el clásico de issue→PR). La «empresa de IA»: AutoGPT y MetaGPT (roles de PM/arquitecto/ingeniero), Symphony (la spec abierta de OpenAI) y claude-squad (varios agentes CLI con worktrees). Matices honestos: Claude Code domina el ecosistema pero la CLI es propietaria — lo open source son las piezas alrededor; las estrellas se mueven rápido (día de captura: oct 2026); y el RALPH de nuestra diapositiva 05 tiene su propia familia en la lista awesome (ralph-wiggum, open-ralph-wiggum…). Pie: fotografiar la awesome lista para el ecosistema.</aside>
+</section>
+
+<!-- 23 · CIERRE · FUENTES -->
+<section data-num="23">
+  <div class="badge">CIERRE · FUENTES</div>
+  <h2 style="font-size:40px; font-weight:800; margin-top:24px;">Fuentes <span class="apagado" style="font-size:22px; font-weight:600;">· para seguir leyendo</span></h2>
+  <div class="fila" style="margin-top:30px; gap:20px; align-items:stretch;">
+    <div class="estacion" style="text-align:left; padding:22px 24px; border-color:var(--ambar); flex:1.1;">
+      <div style="font:700 14px var(--mono); letter-spacing:.2em; color:var(--ambar);">🎥 LA CHARLA</div>
+      <p style="font-size:18px; line-height:1.35; margin-top:12px;"><b>Dex Horthy</b> — «Harness Engineering is Not Enough: Why Software Factories Fail»<br><span class="apagado" style="font-size:15px;">AI Engineer World's Fair 2026</span></p>
+      <p style="font:600 15px var(--mono); margin-top:12px; color:#c9d4ff;">youtube.com/watch?v=Ib5GBkD555M</p>
+      <p style="font:600 14px var(--mono); margin-top:8px; color:#c9d4ff;">hlyr.dev/wsff-gh <span class="apagado" style="font-family:var(--cuerpo); font-weight:400;">· ensayo</span></p>
+      <p style="font:600 14px var(--mono); margin-top:8px; color:#c9d4ff;">ai.engineer/talks <span class="apagado" style="font-family:var(--cuerpo); font-weight:400;">· página del talk</span></p>
+    </div>
+    <div class="estacion" style="text-align:left; padding:22px 24px; flex:1;">
+      <div style="font:700 14px var(--mono); letter-spacing:.2em; color:var(--ambar);">📚 CONTEXTO</div>
+      <p style="font-size:17px; line-height:1.35; margin-top:12px;"><b>Addy Osmani</b> — Software Factories, Light and Dark<br><span style="font:600 13px var(--mono); color:#c9d4ff;">addyosmani.com/blog/software-factories</span></p>
+      <p style="font-size:17px; line-height:1.35; margin-top:12px;"><b>Dan Shapiro</b> — The five levels · el término lights-off<br><span style="font:600 13px var(--mono); color:#c9d4ff;">danshapiro.com/blog</span></p>
+      <p style="font-size:17px; line-height:1.35; margin-top:12px;"><b>Simon Willison</b> — el caso StrongDM<br><span style="font:600 13px var(--mono); color:#c9d4ff;">simonwillison.net/2026/Feb/7</span></p>
+      <p style="font-size:17px; line-height:1.35; margin-top:12px;"><b>Awesome Software Factories</b> — el mapa del ecosistema<br><span style="font:600 13px var(--mono); color:#c9d4ff;">github.com/varun1505/awesome-software-factories</span></p>
+    </div>
+    <div class="estacion" style="text-align:left; padding:22px 24px; flex:1;">
+      <div style="font:700 14px var(--mono); letter-spacing:.2em; color:var(--ambar);">📊 LOS DATOS</div>
+      <p style="font-size:17px; line-height:1.35; margin-top:12px;"><b>Faros AI</b> — Acceleration Whiplash · 22.000 devs<br><span style="font:600 13px var(--mono); color:#c9d4ff;">faros.ai</span></p>
+      <p style="font-size:17px; line-height:1.35; margin-top:12px;"><b>Recursive AI</b> — la fábrica Alera<br><span style="font:600 13px var(--mono); color:#c9d4ff;">recursiveai.org/research/alera-library-factory</span></p>
+      <p style="font-size:17px; line-height:1.35; margin-top:12px;"><b>MDflow</b> — métricas y benchmarks<br><span style="font:600 13px var(--mono); color:#c9d4ff;">mdflow.cz/blog/why-ai-software-factories-fail</span></p>
+    </div>
+  </div>
+  <p class="apagado" style="font-size:16px; margin-top:28px; text-align:center;">lista completa — <b style="color:var(--texto);">17 fuentes</b> extraídas en el repo: <span style="font:600 15px var(--mono); color:#c9d4ff;">docs/SOURCES.md</span></p>
+  <aside class="notes">⏱ 42.5–43.5'. Dejar esta diapositiva en pantalla para el agradecimiento — tiempo para fotografiar. Menciones rápidas: la charla entera se apoya en el talk de Dex Horthy (el vídeo, arriba — 19 minutos muy bien gastados); el diagrama del anexo 2 es de Addy Osmani; los datos son del informe de Faros AI; y quien quiera explorar el ecosistema entero (factories open source, loops, gates): la lista awesome de la columna de contexto. La lista completa, con estado de extracción de cada fuente, vive en el repo. Cierre: «gracias — y read the dang code».</aside>
+</section>
+
+</div></div>
+
+<script src="assets/reveal/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    width:1280, height:720, margin:0, minScale:.2, maxScale:2,
+    hash:true, controls:true, progress:false, slideNumber:false,
+    transition:'fade', showNotes:false
+  });
+
+  // ── Temporizador HUD ─────────────────────────────────────────────
+  // Lee el rango ⏱ de las notas de cada diapositiva (p. ej. «⏱ 10–12'» o «⏱ ~1'»):
+  // cuenta atrás de la diapositiva (rojo al pasarse) + reloj global de la charla.
+  // Clic en el HUD o botón ▶ = iniciar/pausar · ↺ = reset · ✕ / tecla T = ocultar/mostrar.
+  (function () {
+    const hud = document.createElement('div');
+    hud.id = 'timer-hud';
+    hud.title = 'Clic: iniciar/pausar · T: ocultar/mostrar';
+    hud.innerHTML = '<span class="lb">SLIDE</span><span id="tm-clock">—</span>' +
+      '<span class="lb">TOTAL</span><span id="tm-total">00:00</span>' +
+      '<button id="tm-toggle">▶</button><button id="tm-reset">↺</button><button id="tm-hide">✕</button>';
+    document.body.appendChild(hud);
+    const clock = hud.querySelector('#tm-clock'), total = hud.querySelector('#tm-total'),
+          toggle = hud.querySelector('#tm-toggle');
+    const fmt = s => { s = Math.max(0, Math.round(s)); return String(Math.floor(s/60)).padStart(2,'0') + ':' + String(s%60).padStart(2,'0'); };
+    function parseDur(txt) {
+      if (!txt) return null;
+      let m = txt.match(/⏱\s*(\d+(?:[.,]\d+)?)\s*[–—-]\s*(\d+(?:[.,]\d+)?)'/);
+      if (m) return (parseFloat(m[2].replace(',', '.')) - parseFloat(m[1].replace(',', '.'))) * 60;
+      m = txt.match(/⏱\s*~?\s*(\d+(?:[.,]\d+)?)'/);
+      return m ? parseFloat(m[1].replace(',', '.')) * 60 : null;
+    }
+    let running = false, acc = 0, t0 = 0, dur = null, enterAt = 0, iv = null;
+    const elapsed = () => acc + (running ? (Date.now() - t0) / 1000 : 0);
+    function paint() {
+      const e = elapsed();
+      total.textContent = fmt(e);
+      if (dur == null) { clock.textContent = '—'; hud.classList.remove('over'); }
+      else {
+        const remain = dur - (e - enterAt);
+        clock.textContent = (remain < 0 ? '+' : '') + fmt(Math.abs(remain));
+        hud.classList.toggle('over', remain < 0);
+      }
+    }
+    function tick() { paint(); }
+    function setRunning(on) {
+      running = on;
+      if (on) { t0 = Date.now(); iv = setInterval(tick, 250); } else { acc = elapsed(); clearInterval(iv); }
+      toggle.textContent = on ? '⏸' : '▶';
+      paint();
+    }
+    function loadSlide() {
+      const s = Reveal.getCurrentSlide();
+      dur = parseDur(s ? (s.querySelector('aside.notes') || {}).textContent : null);
+      enterAt = elapsed();
+      paint();
+    }
+    function reset() { acc = 0; enterAt = 0; if (running) t0 = Date.now(); loadSlide(); }
+    hud.addEventListener('click', e => {
+      if (e.target.tagName === 'BUTTON') return;
+      setRunning(!running);
+    });
+    toggle.addEventListener('click', () => setRunning(!running));
+    hud.querySelector('#tm-reset').addEventListener('click', reset);
+    hud.querySelector('#tm-hide').addEventListener('click', e => { e.stopPropagation(); hud.classList.add('hidden'); });
+    window.addEventListener('keydown', e => {
+      if (e.key === 't' || e.key === 'T') hud.classList.toggle('hidden');
+    });
+    Reveal.addEventListener('ready', loadSlide);
+    Reveal.addEventListener('slidechanged', loadSlide);
+    loadSlide();
+  })();
+</script>
+</body>
+</html>

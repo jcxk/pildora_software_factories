@@ -67,5 +67,5 @@ const b = await chromium.launch();
 const p = await b.newPage({ viewport:{width:1780,height:820}, deviceScaleFactor:2 });
 await p.setContent(html, { waitUntil:'networkidle' });
 await p.waitForTimeout(300);
-await p.screenshot({ path: '../docs/assets/img/roadmap-slide.png' });
+await p.screenshot({ path: '../docs/deck/assets/img/roadmap-slide.png' });
 await b.close(); console.log('roadmap 2 líneas v2 OK');
