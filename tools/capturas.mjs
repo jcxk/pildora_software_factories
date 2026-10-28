@@ -17,7 +17,10 @@ await page.evaluate(() => {
   Reveal.configure({ transition: 'none', progress: false, autoSlide: 0 });
 });
 if (process.env.HIDE_HUD) {
-  await page.evaluate(() => document.getElementById('timer-hud')?.remove());
+  await page.evaluate(() => {
+    document.getElementById('timer-hud')?.remove();
+    document.querySelector('.controls')?.remove(); // flechas de navegación reveal
+  });
 }
 const total = await page.evaluate(() => Reveal.getTotalSlides());
 const notes = [];
